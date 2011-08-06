@@ -38,7 +38,7 @@ package
 			} else if (event.charCode == "q".charCodeAt(0))
 			{
 				tankController.shot();
-				target = gameController.ReturnTarget();
+				target = gameController.returnTarget();
 				target.x = Math.random() * 200;
 				target.y = Math.random() * 200;
 			    colorInfo.color = Math.random() * 0xffffff;
