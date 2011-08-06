@@ -1,4 +1,5 @@
 bin-debug/
+.settings/
 .DS_Store
 *~
 .project

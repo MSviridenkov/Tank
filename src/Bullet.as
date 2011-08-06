@@ -34,9 +34,24 @@ package
 		}
 		
 		private function onTimer(event:TimerEvent):void {
-			this.x += (_direction == TankController.LEFT_DIR) ? -SPEED : (_direction == TankController.RIGHT_DIR) ? SPEED : 0;
-			this.y += (_direction == TankController.UP_DIR) ? -SPEED : (_direction == TankController.DOWN_DIR) ? SPEED : 0;
-			trace(this.x);
+			//this.x += (_direction == TankController.LEFT_DIR) ? -SPEED : (_direction == TankController.RIGHT_DIR) ? SPEED : 0;
+			//this.y += (_direction == TankController.UP_DIR) ? -SPEED : (_direction == TankController.DOWN_DIR) ? SPEED : 0;
+
+			if (_direction == TankController.LEFT_DIR) {
+				this.x = this.x - SPEED;
+			} else {
+				if (_direction == TankController.RIGHT_DIR) {
+					this.x = this.x + SPEED;
+				}
+			}
+			if (_direction == TankController.UP_DIR) {
+				this.y = this.y - SPEED;
+			} else {
+				if (_direction == TankController.DOWN_DIR) {
+					this.y = this.y + SPEED;
+				}
+			}
+			
 		}
 		
 		/*
