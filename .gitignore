@@ -1,3 +1,5 @@
 bin-debug/
 .DS_Store
 *~
+.project
+.actionScriptProperties
