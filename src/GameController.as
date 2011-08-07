@@ -16,7 +16,8 @@ package
 		
 		public static const CELL:int = 10;
 		
-		public function returnTarget():Target{
+		public function returnTarget():Target
+		{
 			return _target;
 		}
 		

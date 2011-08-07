@@ -2,27 +2,22 @@ package
 {
 	import flash.display.Sprite;
 	import flash.events.TimerEvent;
-	import flash.geom.ColorTransform;
-	import flash.geom.Transform;
 	import flash.utils.Timer;
 	
 	public class Bullet extends Sprite
 	{
-		private var _target:Target;
-		private var _container:Sprite;
 		private var _color:uint;
 		private var _radius:uint;
-		private var _direction:uint;
-		private var _colorInfo:ColorTransform = new ColorTransform;
+		private var _direction:uint; //Направление
+		//private var _rotation:int;
 		
 		private const SPEED:Number = 1;
 		
 		private var timer:Timer;
 		
-		public function Bullet(x:int, y:int, d:uint, r:int, target:Target):void
+		public function Bullet(x:int, y:int, d:uint, r:int):void
 		{
 			var _bullet:Bullet_pic = new Bullet_pic;
-			_target = target;
 			addChild(_bullet);
 			super();
 			this.x = x;
@@ -41,14 +36,14 @@ package
 		private function onTimer(event:TimerEvent):void {
 			this.x += (_direction == TankController.LEFT_DIR) ? -SPEED : (_direction == TankController.RIGHT_DIR) ? SPEED : 0;
 			this.y += (_direction == TankController.UP_DIR) ? -SPEED : (_direction == TankController.DOWN_DIR) ? SPEED : 0;
-			if (this.hitTestObject(_target) == true){
-				_target.x = Math.random() * 200;
-				_target.y = Math.random() * 200;
-				_colorInfo.color = Math.random() * 0xffffff;
-				_target.transform.colorTransform = _colorInfo;
-			}
-			
 		}
+		
+		/*
+		_rotation == TankController.LEFT_ROT
+		_rotation == TankController.RIGHT_ROT
+		_rotation == TankController.UP_ROT
+		_rotation == TankController.DOWN_ROT
+		*/
 		
 		public function startMove():void {
 			timer.start();
