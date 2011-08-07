@@ -2,8 +2,11 @@ package
 {
 	import flash.display.Sprite;
 	import flash.events.KeyboardEvent;
+	import flash.geom.ColorTransform;
+	import flash.geom.Transform;
+	import tank.TankController;
 	
-	[SWF(width=700, height=900, frameRate=25)]
+	[SWF(width=600, height=600, frameRate=25)]
 	public class Main extends Sprite
 	{
 		var container:Sprite;
@@ -22,9 +25,6 @@ package
 		}
 		
 		private function onKeyDown(event:KeyboardEvent):void {
-			
-			
-			
 			if (event.charCode == "s".charCodeAt(0) ||
 					event.charCode == "a".charCodeAt(0) ||
 					event.charCode == "d".charCodeAt(0) ||

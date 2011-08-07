@@ -6,6 +6,9 @@ package
 	import flash.geom.Transform;
 	import flash.utils.Timer;
 	
+	import tank.TankController;
+	import tank.TankDirection;
+	
 	public class Bullet extends Sprite
 	{
 		private var _target:Target;
@@ -39,8 +42,8 @@ package
 		}
 		
 		private function onTimer(event:TimerEvent):void {
-			this.x += (_direction == TankController.LEFT_DIR) ? -SPEED : (_direction == TankController.RIGHT_DIR) ? SPEED : 0;
-			this.y += (_direction == TankController.UP_DIR) ? -SPEED : (_direction == TankController.DOWN_DIR) ? SPEED : 0;
+			this.x += (_direction == TankDirection.LEFT_DIR) ? -SPEED : (_direction == TankDirection.RIGHT_DIR) ? SPEED : 0;
+			this.y += (_direction == TankDirection.UP_DIR) ? -SPEED : (_direction == TankDirection.DOWN_DIR) ? SPEED : 0;
 			if (this.hitTestObject(_target) == true){
 				_target.x = Math.random() * 200;
 				_target.y = Math.random() * 200;
