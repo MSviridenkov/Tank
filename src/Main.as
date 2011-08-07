@@ -12,8 +12,7 @@ package
 	[SWF(width=600, height=600, frameRate=25)]
 	public class Main extends Sprite
 	{
-		var container:Sprite;
-		var tankController:TankController; 
+		var container:Sprite; 
 		var gameController:GameController;
 		
 		public function Main()
@@ -22,7 +21,6 @@ package
 			this.addChild(container); 
 			
 			gameController = new GameController(container);
-			tankController = new TankController(container, gameController);
 			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 		}
@@ -35,7 +33,7 @@ package
 				onMoveKey(event);
 			}
 			else if (event.charCode == "q".charCodeAt(0)){
-				tankController.shot();
+				gameController.tankController.shot();
 			}
 		}
 			
@@ -46,7 +44,7 @@ package
 				if (event.charCode == "d".charCodeAt(0)) { direction = TankDirection.RIGHT_DIR; }
 				if (event.charCode == "w".charCodeAt(0)) { direction = TankDirection.UP_DIR; }
 				
-				tankController.go(direction);
+				gameController.tankController.go(direction);
 			}
 			
 	}

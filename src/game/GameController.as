@@ -5,18 +5,37 @@ package game
 	import flash.geom.Transform;
 	
 	import game.matrix.MapMatrix;
+	import game.tank.BulletsController;
+	import game.tank.TankController;
 	import game.tank.Target;
 
 	public class GameController
 	{
 		private var _target:Target;
 		private var _container:Sprite;
+		private var _bulletsController:BulletsController;
+		private var _tankController:TankController;
 		
 		public static const CELL:int = 20;
 		
 		public function GameController(c:Sprite):void {
 			_container = c;
-			createTarget();
+			
+			initControllers();
+			createTargets();
+			
+		}
+		
+		public function get tankController():TankController { return _tankController; }
+		
+		private function initControllers():void {
+			_bulletsController = new BulletsController(_container);
+			_tankController = new TankController(_container, _bulletsController);
+		}
+		
+		private function createTargets():void {
+				createTarget();
+				_bulletsController.addTarget(_target);
 		}
 		
 		public function returnTarget():Target {
@@ -32,6 +51,5 @@ package game
 			_container.addChild(_target);
 			//_matrix[rndX][rndY] = MatrixItemIds.TARGET;
 		}
-		
 	}
 }
