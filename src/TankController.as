@@ -4,6 +4,8 @@ package
 
 	public class TankController
 	{
+		private var _target:Target;
+		
 		private var _tank:Tank;
 		private var _direction:uint;
 		
@@ -42,6 +44,7 @@ package
 			_tank.x = _startX;
 			_tank.y = _startY;
 			_direction = UP_DIR;
+			_target = _gameController.returnTarget();
 		}
 		
 		
@@ -87,7 +90,7 @@ package
 		}
 		
 		public function shot():void {
-			var b:Bullet = new Bullet(_tank.x, _tank.y, _direction, _tank.rotation);
+			var b:Bullet = new Bullet(_tank.x, _tank.y, _direction, _tank.rotation, _target);
 			b.startMove();
 			_container.addChild(b);
 		}
