@@ -2,8 +2,8 @@ package game.matrix {
 	public class MapMatrix {
 		private var _matrix:Vector.<Vector.<int>>;
 		
-		public static const MATRIX_WIDTH:int = 20;
-		public static const MATRIX_HEIGHT:int = 20;
+		public static const MATRIX_WIDTH:int = 30;
+		public static const MATRIX_HEIGHT:int = 30;
 		
 		public function MapMatrix() {
 		}
