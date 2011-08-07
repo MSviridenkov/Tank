@@ -1,4 +1,4 @@
-package matrix {
+package game.matrix {
 	public class MapMatrix {
 		private var _matrix:Vector.<Vector.<int>>;
 		

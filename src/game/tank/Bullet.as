@@ -1,4 +1,4 @@
-package
+package game.tank
 {
 	import flash.display.Sprite;
 	import flash.events.TimerEvent;
@@ -6,8 +6,6 @@ package
 	import flash.geom.Transform;
 	import flash.utils.Timer;
 	
-	import tank.TankController;
-	import tank.TankDirection;
 	
 	public class Bullet extends Sprite
 	{

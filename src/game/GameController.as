@@ -1,17 +1,18 @@
-package
+package game
 {
 	import flash.display.Sprite;
 	import flash.geom.ColorTransform;
 	import flash.geom.Transform;
 	
-	import matrix.MapMatrix;
+	import game.matrix.MapMatrix;
+	import game.tank.Target;
 
 	public class GameController
 	{
 		private var _target:Target;
 		private var _container:Sprite;
 		
-		public static const CELL:int = 10;
+		public static const CELL:int = 20;
 		
 		public function GameController(c:Sprite):void {
 			_container = c;

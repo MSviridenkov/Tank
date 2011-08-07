@@ -1,4 +1,4 @@
-package
+package game.matrix
 {
 	public class MatrixItemIds
 	{

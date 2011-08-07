@@ -1,4 +1,4 @@
-package tank {
+package game.tank {
 	import flash.geom.Point;
 
 	public class TankDirection {
@@ -25,7 +25,7 @@ package tank {
 		public function get rotation():uint { return _rotation; }
 		
 		public function tickPoint(point:Point):Point {
-			const res:Point = new Point();
+			const res:Point = point;
 			switch(_value) {
 				case DOWN_DIR : {
 					res.y += TankController.MOVE_LENGHT;
@@ -46,6 +46,14 @@ package tank {
 			return res;
 		}
 		
+		public function getBackForTween(point:Point):Object {
+			const tempPoint:Point = new Point(point.x, point.y);
+			const movePoint:Point = tickPoint(tickPoint(tempPoint));
+			const xOffset:Number = point.x - movePoint.x;
+			const yOffset:Number = point.y - movePoint.y;
+			return {x : point.x + xOffset, y : point.y + yOffset};
+		}
+			
 		private function updateRotation():void {
 			switch(_value) {
 				case DOWN_DIR : {
@@ -53,15 +61,15 @@ package tank {
 					break;
 				}
 				case LEFT_DIR : {
-					_rotation -= TankController.LEFT_ROT;
+					_rotation = TankController.LEFT_ROT;
 					break;
 				}
 				case UP_DIR : {
-					_rotation -= TankController.UP_ROT;
+					_rotation = TankController.UP_ROT;
 					break;
 				}
 				case RIGHT_DIR : {
-					_rotation += TankController.RIGHT_ROT;
+					_rotation = TankController.RIGHT_ROT;
 				}
 			}
 		}

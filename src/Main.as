@@ -4,7 +4,10 @@ package
 	import flash.events.KeyboardEvent;
 	import flash.geom.ColorTransform;
 	import flash.geom.Transform;
-	import tank.TankController;
+	
+	import game.tank.TankController;
+	import game.tank.TankDirection;
+	import game.GameController;
 	
 	[SWF(width=600, height=600, frameRate=25)]
 	public class Main extends Sprite
@@ -29,12 +32,22 @@ package
 					event.charCode == "a".charCodeAt(0) ||
 					event.charCode == "d".charCodeAt(0) ||
 					event.charCode == "w".charCodeAt(0)){
-				tankController.go(event.charCode);
+				onMoveKey(event);
 			}
 			else if (event.charCode == "q".charCodeAt(0)){
 				tankController.shot();
 			}
-			
 		}
+			
+			private function onMoveKey(event:KeyboardEvent):void {
+				var direction:uint;
+				if (event.charCode == "s".charCodeAt(0)) { direction = TankDirection.DOWN_DIR; }
+				if (event.charCode == "a".charCodeAt(0)) { direction = TankDirection.LEFT_DIR; }
+				if (event.charCode == "d".charCodeAt(0)) { direction = TankDirection.RIGHT_DIR; }
+				if (event.charCode == "w".charCodeAt(0)) { direction = TankDirection.UP_DIR; }
+				
+				tankController.go(direction);
+			}
+			
 	}
 }

@@ -1,4 +1,4 @@
-package
+package game.tank
 {
 	import flash.display.Shape;
 	import flash.display.Sprite;
