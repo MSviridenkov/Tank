@@ -1,15 +1,13 @@
 package game.tank
 {
-	import flash.display.Shape;
 	import flash.display.Sprite;
 
-	public class Target extends Shape
+	public class Target extends Sprite
 	{
 		public function Target()
 		{
-			this.graphics.beginFill(0x0f0f0f);
-			this.graphics.drawCircle(0, 0, 10);
-			this.graphics.endFill();
+			var _tank:Tank = new Tank;
+			addChild(_tank);
 		}
 	}
 }
