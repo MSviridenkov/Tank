@@ -1,5 +1,4 @@
-package game.tank
-{
+package game.tank {
 	import com.greensock.TweenMax;
 	
 	import flash.display.Sprite;
@@ -8,8 +7,7 @@ package game.tank
 	import game.GameController;
 	import game.matrix.MapMatrix;
 
-	public class TankController
-	{
+	public class TankController {
 		private var _tank:Tank;
 		private var _direction:TankDirection;
 		
@@ -31,8 +29,7 @@ package game.tank
 		
 		public static const MOVE_LENGHT:int = GameController.CELL;
 		
-		public function TankController(c:Sprite, bulletsController:BulletsController):void
-		{
+		public function TankController(c:Sprite, bulletsController:BulletsController):void {
 			_moving = false;
 			_tank = new Tank();
 			_container = c;

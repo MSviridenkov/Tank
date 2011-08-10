@@ -6,34 +6,34 @@ package game.tank {
 	import flash.utils.Timer;
 
 	public class BulletsController {
-		private const SPEED:Number = 3;
+		private const SPEED:Number = 4;
 		
 		private var _timer:Timer;
 		private var _colorInfo:ColorTransform = new ColorTransform;
-		private var bullets:Vector.<Bullet>; //vector of bullets on scenes
+		private var _bullets:Vector.<Bullet>; //vector of bullets on scenes
 		private var _container:Sprite; // container for bullets
-		private var _target:Target; //мишень, пока одна, в итоге должен быть массив мишеней
+		private var _targets:Vector.<Target>; //мишень, пока одна, в итоге должен быть массив мишеней
 		private var _direction:uint;
 		private var _rotation:uint;
-		private var p:Point;
+		private var _p:Point;
 
 		public function BulletsController(container:Sprite) {
 			_container = container;
-			bullets = new Vector.<Bullet>();
+			_bullets = new Vector.<Bullet>();
 			initTimer();
 			startMove();
 		}
 		
-		public function addTarget(target:Target):void { // функция для добавления мишени в этот класс, нужно ее вызывать при создании мишени
-			_target = target;
+		public function addTarget(targets:Vector.<Target>):void { // функция для добавления мишени в этот класс, нужно ее вызывать при создании мишени
+			_targets = targets;
 		}
 		
 		public function pushBullet(point:Point, d:uint, r:uint):void {//здесь создаем пулю и запускаем и добавляем в массив
-			 p = point;
+			 _p = point;
 			 _direction = d;
 			 _rotation = r;
-			 var bullet:Bullet = new Bullet (p.x, p.y, _direction, _rotation);
-			 bullets.push(bullet);
+			 var bullet:Bullet = new Bullet (_p.x, _p.y, _direction, _rotation);
+			 _bullets.push(bullet);
 			 _container.addChild(bullet);
 		}
 		
@@ -44,19 +44,24 @@ package game.tank {
 		}
 			
 		private function onTimer(event:TimerEvent):void {
-			for each (var bullet:Bullet in bullets) {// проходимся по всем элементам массива bullets
+			for each (var bullet:Bullet in _bullets) {// проходимся по всем элементам массива bullets
 				bullet.x += (bullet.direction == TankDirection.LEFT_DIR) ? -SPEED : (bullet.direction == TankDirection.RIGHT_DIR) ? SPEED : 0;
 				bullet.y += (bullet.direction == TankDirection.UP_DIR) ? -SPEED : (bullet.direction == TankDirection.DOWN_DIR) ? SPEED : 0;
-			
-				if (bullet.hitTestObject(_target) == true){
-					_target.x = Math.random() * 200;
-					_target.y = Math.random() * 200;
-					_colorInfo.color = Math.random() * 0xffffff;
-					_target.transform.colorTransform = _colorInfo;
+				
+			for each (var target:Target in _targets) {
+				if (bullet.hitTestObject(target) == true){
+					//target.x = Math.random() * 200;
+					//target.y = Math.random() * 200;
+					//_colorInfo.color = Math.random() * 0xffffff;
+					//target.transform.colorTransform = _colorInfo;
 					_container.removeChild(bullet);
-					var index:int = bullets.indexOf(bullet);
-					bullets.splice(index, 1);
+					var indexbullet:int = _bullets.indexOf(bullet);
+					_bullets.splice(indexbullet, 1);
+					_container.removeChild(target);
+					var indextarget:int = _targets.indexOf(target);
+					_targets.splice(indextarget, 1);
 				}
+			}
 			}
 		}
 		

@@ -1,5 +1,4 @@
-package
-{
+package {
 	import flash.display.Sprite;
 	import flash.events.KeyboardEvent;
 	import flash.geom.ColorTransform;
@@ -10,13 +9,11 @@ package
 	import game.GameController;
 	
 	[SWF(width=600, height=600, frameRate=25)]
-	public class Main extends Sprite
-	{
+	public class Main extends Sprite {
 		var container:Sprite; 
 		var gameController:GameController;
 		
-		public function Main()
-		{
+		public function Main() {
 			container = new Sprite(); 
 			this.addChild(container); 
 			

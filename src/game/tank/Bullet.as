@@ -1,5 +1,4 @@
-package game.tank
-{
+package game.tank {
 	import flash.display.Sprite;
 	import flash.events.TimerEvent;
 	import flash.geom.ColorTransform;
@@ -7,7 +6,7 @@ package game.tank
 	import flash.utils.Timer;
 	
 	
-	public class Bullet extends Sprite{
+	public class Bullet extends Sprite {
 		private var _radius:uint;
 		private var _direction:uint;
 		
