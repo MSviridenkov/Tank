@@ -18,8 +18,7 @@ package game.tank {
 			_targets = new Vector.<Target>;
 			_bulletsController = bulletsController;
 			_bulletsController.addTarget(_targets);
-			var rnd1:int = Math.random() * 5;
-			for (var i:int = 0; i < rnd1; i++) {
+			for (var i:int = 0; i < Math.random() * 5; i++) {
 			createTarget();
 			}
 			initTimer();
