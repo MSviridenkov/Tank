@@ -29,14 +29,6 @@ package game {
 			_bulletsController = new BulletsController(_container);
 			_tankController = new TankController(_container, _bulletsController);
 			_targetsController = new TargetsController(_container, _bulletsController);
-			
 		}
-		
-		/*
-		public function returnTarget():Target {
-			return _target;
-		}*/
-		
-		
 	}
 }

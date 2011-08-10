@@ -16,9 +16,14 @@ package game.tank {
 		public function TargetsController(container:Sprite, bulletsController:BulletsController) {
 			_container = container;
 			_targets = new Vector.<Target>;
-			createTarget();
 			_bulletsController = bulletsController;
 			_bulletsController.addTarget(_targets);
+			var rnd1:int = Math.random() * 5;
+			for (var i:int = 0; i < rnd1; i++) {
+			createTarget();
+			}
+			initTimer();
+			startTimer();
 		}
 		
 		private function createTarget():void {
@@ -32,10 +37,18 @@ package game.tank {
 			//_matrix[rndX][rndY] = MatrixItemIds.TARGET;
 		}
 		
-		/*private function initTimer():void {
-			_timer = new Timer(1);
-			_timer.addEventListener(TimerEvent.TIMER, createTarget());
-		}*/
+		private function createTargetforTimer (event:TimerEvent) {
+			var rnd2:int = Math.random()*2;
+			if (_targets.length <5 && rnd2 == 1) {
+			createTarget();
+			}
+			else {}
+		}
+		
+		private function initTimer():void {
+			_timer = new Timer(5000);
+			_timer.addEventListener(TimerEvent.TIMER, createTargetforTimer);
+		}
 		
 		/*private function onTimer(event:TimerEvent):void {
 			
@@ -54,11 +67,11 @@ package game.tank {
 					_bullets.splice(index, 1);
 				}
 			}
-		}
+		}*/
 		
 		private function startTimer() {
 			_timer.start();
-		}*/
+		}
 	}
 }
 
