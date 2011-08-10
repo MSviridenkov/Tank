@@ -37,8 +37,7 @@ package game.tank {
 		}
 		
 		private function createTargetforTimer (event:TimerEvent) {
-			var rnd2:int = Math.random()*2;
-			if (_targets.length <5 && rnd2 == 1) {
+			if (_targets.length <5 && Math.random() < .5) {
 			createTarget();
 			}
 			else {}
@@ -48,25 +47,6 @@ package game.tank {
 			_timer = new Timer(5000);
 			_timer.addEventListener(TimerEvent.TIMER, createTargetforTimer);
 		}
-		
-		/*private function onTimer(event:TimerEvent):void {
-			
-			
-			for each (var bullet:Bullet in _bullets) {// проходимся по всем элементам массива bullets
-				bullet.x += (bullet.direction == TankDirection.LEFT_DIR) ? -SPEED : (bullet.direction == TankDirection.RIGHT_DIR) ? SPEED : 0;
-				bullet.y += (bullet.direction == TankDirection.UP_DIR) ? -SPEED : (bullet.direction == TankDirection.DOWN_DIR) ? SPEED : 0;
-				
-				if (bullet.hitTestObject(_target) == true){
-					_target.x = Math.random() * 200;
-					_target.y = Math.random() * 200;
-					_colorInfo.color = Math.random() * 0xffffff;
-					_target.transform.colorTransform = _colorInfo;
-					_container.removeChild(bullet);
-					var index:int = _bullets.indexOf(bullet);
-					_bullets.splice(index, 1);
-				}
-			}
-		}*/
 		
 		private function startTimer() {
 			_timer.start();

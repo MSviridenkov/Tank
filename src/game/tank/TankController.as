@@ -13,6 +13,7 @@ package game.tank {
 		
 		private var _container:Sprite;
 		private var _bulletsController:BulletsController;
+		private var _gunController:GunController;
 		
 		private var _startX:Number = 50;
 		private var _startY:Number = 50;
@@ -29,19 +30,19 @@ package game.tank {
 		
 		public static const MOVE_LENGHT:int = GameController.CELL;
 		
-		public function TankController(c:Sprite, bulletsController:BulletsController):void {
+		public function TankController(container:Sprite, bulletsController:BulletsController):void {
 			_moving = false;
 			_tank = new Tank();
-			_container = c;
+			_container = container;
 			_bulletsController = bulletsController;
-			c.addChild(_tank);
+			container.addChild(_tank);
 			_cellX = _startX/GameController.CELL;
 			_cellY = _startY/GameController.CELL;
 			_tank.x = _startX;
 			_tank.y = _startY;
 			_direction = new TankDirection(TankDirection.UP_DIR);
+			_gunController = new GunController(_tank);
 		}
-		
 		
 		public function go(direction:uint):void {
 			_direction.value = direction;
