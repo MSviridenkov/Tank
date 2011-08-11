@@ -1,12 +1,14 @@
 package {
 	import flash.display.Sprite;
 	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
 	import flash.geom.ColorTransform;
+	import flash.geom.Point;
 	import flash.geom.Transform;
 	
+	import game.GameController;
 	import game.tank.TankController;
 	import game.tank.TankDirection;
-	import game.GameController;
 	
 	[SWF(width=600, height=600, frameRate=25)]
 	public class Main extends Sprite {
@@ -20,6 +22,11 @@ package {
 			gameController = new GameController(container);
 			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			stage.addEventListener(MouseEvent.CLICK, onMouseClick);
+		}
+		
+		private function onMouseClick(event:MouseEvent):void {
+			gameController.tankController.shot(new Point(event.localX, event.localY)); // localX, localY - координаты мышки)
 		}
 		
 		private function onKeyDown(event:KeyboardEvent):void {
@@ -29,9 +36,9 @@ package {
 					event.charCode == "w".charCodeAt(0)){
 				onMoveKey(event);
 			}
-			else if (event.charCode == "q".charCodeAt(0)){
-				gameController.tankController.shot();
-			}
+			//else if (event.charCode == "q".charCodeAt(0)){
+			//	gameController.tankController.shot();
+			//}
 		}
 			
 			private function onMoveKey(event:KeyboardEvent):void {

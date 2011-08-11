@@ -52,19 +52,14 @@ package game.tank {
 			tweenToPoint(new Point(nextPoint.x, nextPoint.y));
 		}
 		
-		public function shot():void {
-			_bulletsController.pushBullet(new Point(_tank.x, _tank.y), _direction.value, _direction.rotation);
-			tweenBack();
+		public function shot(point:Point):void {
+			_bulletsController.pushBullet(new Point(_tank.x, _tank.y), point);
 		}
 		
 		private function tweenToPoint(point:Point):void {
 			if (!_moving) {
 				TweenMax.to(_tank, .3, {x : point.x, y:point.y, easing: null, onCompelte : function():void { _moving = false; }});
 			}
-		}
-		
-		private function tweenBack():void {
-			TweenMax.to(_tank, .3, _direction.getBackForTween(new Point(_tank.x, _tank.y)));
 		}
 		
 		private function canMove():Boolean {
