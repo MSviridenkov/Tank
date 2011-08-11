@@ -13,7 +13,7 @@ package {
 	[SWF(width=600, height=600, frameRate=25)]
 	public class Main extends Sprite {
 		var container:Sprite; 
-		var gameController:GameController;
+		public var gameController:GameController;
 		
 		public function Main() {
 			container = new Sprite(); 
@@ -26,7 +26,9 @@ package {
 		}
 		
 		private function onMouseClick(event:MouseEvent):void {
-			gameController.tankController.shot(new Point(event.localX, event.localY)); // localX, localY - координаты мышки)
+			gameController.tankController.shot(new Point(event.localX, event.localY));
+			gameController.tankController.gunController.gunRotation (new Point(event.localX, event.localY), 
+																															gameController.tankController._direction._rotation);
 		}
 		
 		private function onKeyDown(event:KeyboardEvent):void {

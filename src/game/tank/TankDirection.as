@@ -7,8 +7,9 @@ package game.tank {
 		public static const UP_DIR:uint = 2;
 		public static const DOWN_DIR:uint = 3;
 		
+		public var _rotation:uint;
+		
 		private var _value:uint;
-		private var _rotation:uint;
 		
 		public function TankDirection(defaultDirection:uint) {
 			super();

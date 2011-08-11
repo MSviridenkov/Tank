@@ -8,12 +8,12 @@ package game.tank {
 	import game.matrix.MapMatrix;
 
 	public class TankController {
-		private var _tank:Tank;
-		private var _direction:TankDirection;
+		public var _tank:Tank;
+		public var _direction:TankDirection;
+		public var gunController:GunController;
 		
 		private var _container:Sprite;
 		private var _bulletsController:BulletsController;
-		private var _gunController:GunController;
 		
 		private var _startX:Number = 50;
 		private var _startY:Number = 50;
@@ -41,7 +41,7 @@ package game.tank {
 			_tank.x = _startX;
 			_tank.y = _startY;
 			_direction = new TankDirection(TankDirection.UP_DIR);
-			_gunController = new GunController(_tank);
+			gunController = new GunController(_tank);
 		}
 		
 		public function go(direction:uint):void {

@@ -36,7 +36,7 @@ package game.tank {
 			//_matrix[rndX][rndY] = MatrixItemIds.TARGET;
 		}
 		
-		private function createTargetforTimer (event:TimerEvent) {
+		private function createTargetforTimer (event:TimerEvent):void {
 			if (_targets.length <5 && Math.random() < .5) {
 			createTarget();
 			}
@@ -48,7 +48,7 @@ package game.tank {
 			_timer.addEventListener(TimerEvent.TIMER, createTargetforTimer);
 		}
 		
-		private function startTimer() {
+		private function startTimer():void {
 			_timer.start();
 		}
 	}
