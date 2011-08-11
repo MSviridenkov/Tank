@@ -15,8 +15,8 @@ package game.tank {
 		private var _container:Sprite;
 		private var _bulletsController:BulletsController;
 		
-		private var _startX:Number = 50;
-		private var _startY:Number = 50;
+		private var _startX:Number = 300;
+		private var _startY:Number = 300;
 		
 		private var _cellX:int;
 		private var _cellY:int;
