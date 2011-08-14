@@ -26,8 +26,8 @@ package {
 		}
 		
 		private function onMouseClick(event:MouseEvent):void {
-			gameController.tankController.shot(new Point(event.localX, event.localY));
-			gameController.tankController.tank.gunController.gunRotation( (new Point(event.localX, event.localY)));
+			gameController.tankController.shot(new Point(event.stageX, event.stageY));
+			gameController.tankController.tank.gunController.gunRotation( (new Point(event.stageX, event.stageY)));
 			gameController.tankController._bulletsController.bulletRotate(gameController.tankController.tank.gunController.gunRot);
 		}
 		
