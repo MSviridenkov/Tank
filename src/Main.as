@@ -12,7 +12,7 @@ package {
 	
 	[SWF(width=600, height=600, frameRate=25)]
 	public class Main extends Sprite {
-		var container:Sprite; 
+		private var container:Sprite; 
 		public var gameController:GameController;
 		
 		public function Main() {
@@ -27,8 +27,8 @@ package {
 		
 		private function onMouseClick(event:MouseEvent):void {
 			gameController.tankController.shot(new Point(event.localX, event.localY));
-			gameController.tankController.gunController.gunRotation (new Point(event.localX, event.localY), 
-																															gameController.tankController._direction._rotation);
+			gameController.tankController.tank.gunController.gunRotation( (new Point(event.localX, event.localY)));
+			gameController.tankController._bulletsController.bulletRotate(gameController.tankController.tank.gunController.gunRot);
 		}
 		
 		private function onKeyDown(event:KeyboardEvent):void {

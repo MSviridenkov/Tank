@@ -1,37 +1,28 @@
 package game.tank {
+	import flash.display.Sprite;
 	import flash.geom.Point;
 
 	public class GunController {
-		private var _gun:Gun;
-		private var _tank:Tank;
+		public var gunRot:int;
 		
-		public function GunController(tank:Tank) {
-		_gun = new Gun;
-		_tank = tank;
-		_tank.addChild(_gun);
+		private var _gun:GunView;
+		
+		public function GunController(gun:GunView) {
+			_gun = gun;
 		}
 		
-		public function gunRotation(point:Point, rotation:uint):void {
+		public function gunRotation (point:Point):void {
 			var _point:Point = point;
-			var _rotation:uint = rotation;
-			
-			switch (_rotation) {
-				case TankController.DOWN_ROT : {
-					_gun.rotation = Math.atan2(_point.y - _tank.y, _point.x - _tank.y)*180/Math.PI + 270;;
-					break;
-				}
-				case TankController.LEFT_ROT : {
-					_gun.rotation = Math.atan2(_point.y - _tank.y, _point.x - _tank.y)*180/Math.PI + 180;
-					break;
-				}
-				case TankController.UP_ROT : {
-					_gun.rotation = Math.atan2(_point.y - _tank.y, _point.x - _tank.y)*180/Math.PI + 90;
-					break;
-				}
-				case TankController.RIGHT_ROT : {
-					_gun.rotation = Math.atan2(_point.y - _tank.y, _point.x - _tank.y)*180/Math.PI;
-				}
+			var angle1:int = Math.asin((_point.x - _gun.x)/(Math.sqrt((_point.x - _gun.x)*(_point.x - _gun.x) + (_point.y - _gun.y)*(_point.y - _gun.y))))*180/Math.PI;
+			var angle2:int = Math.asin((_point.x - _gun.x)/(Math.sqrt((_point.x - _gun.x)*(_point.x - _gun.x) + (_point.y - _gun.y)*(_point.y - _gun.y))))*180/Math.PI*(-1) + 180;
+			if (_point.y < _gun.y) {
+				gunRot = angle1;
 			}
+			else {
+				gunRot = angle2;
+			}
+			_gun.rotation = gunRot;
+			//_gun.rotation = Math.atan2(_point.y - _gun.y, _point.x - _gun.y)*180/Math.PI + 90;
 		}
 	}
 }

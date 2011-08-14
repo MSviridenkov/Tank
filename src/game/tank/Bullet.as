@@ -7,14 +7,12 @@ package game.tank {
 	
 	
 	public class Bullet extends Sprite {
-		private var _radius:uint;
 		
-		public function Bullet(x:int, y:int, r:uint = 0):void {
+		public function Bullet(x:int, y:int):void {
 			var view:Bullet_pic = new Bullet_pic();
 			addChild(view);
 			this.x = x;
 			this.y = y;
-			this.rotation = r;
 		}
 		
 	}

@@ -20,6 +20,7 @@ package game.tank {
 		private var _rotation:uint;
 		private var _p:Point;
 		private var _tPoint:Point;
+		private var bullet:Bullet;
 
 		public function BulletsController(container:Sprite) {
 			_container = container;
@@ -35,10 +36,14 @@ package game.tank {
 		public function pushBullet(point:Point, targetPoint:Point):void {
 			 _p = point;
 			 _tPoint = targetPoint;
-			 var bullet:Bullet = new Bullet (_p.x, _p.y, _rotation);
+			 bullet = new Bullet (_p.x, _p.y);
 			 _bullets.push(bullet);
 			 _container.addChild(bullet);
 			 startBulletTween(bullet, targetPoint);
+		}
+		
+		public function bulletRotate(rotation:int):void {
+			bullet.rotation = rotation;
 		}
 		
 		private function startBulletTween(bullet:Bullet, targetPoint:Point):void {
