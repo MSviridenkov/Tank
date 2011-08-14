@@ -37,40 +37,31 @@ package game.tank {
 			container.addChild(tank);
 			_cellX = _startX/GameController.CELL;
 			_cellY = _startY/GameController.CELL;
-			tank.tankBase.x = _startX;
-			tank.tankBase.y = _startY;
-			tank.gun.x = tank.tankBase.x;
-			tank.gun.y = tank.tankBase.y;
+			tank.x = _startX;
+			tank.y = _startY;
 			_direction = new TankDirection(TankDirection.UP_DIR);
 		}
 		
 		public function go(direction:uint):void {
 			_direction.value = direction;
 			if (!canMove()) { return; }
-			const nextPoint:Point = _direction.tickPoint(new Point(tank.tankBase.x, tank.tankBase.y));
+			const nextPoint:Point = _direction.tickPoint(new Point(tank.x, tank.y));
 			tank.tankBase.rotation = _direction.rotation;
-			tweenToPointTankBase(new Point(nextPoint.x, nextPoint.y));
-			tweenToPointGun(new Point(nextPoint.x, nextPoint.y));
+			tweenToPointTank(new Point(nextPoint.x, nextPoint.y));
 		}
 		
 		public function shot(point:Point):void {
-			_bulletsController.pushBullet(new Point(tank.tankBase.x, tank.tankBase.y), point);
+			_bulletsController.pushBullet(new Point(tank.x, tank.y), point);
 		}
 		
-		private function tweenToPointTankBase(point:Point):void {
+		private function tweenToPointTank(point:Point):void {
 			if (!_moving) {
-				TweenMax.to(tank.tankBase, .3, {x : point.x, y:point.y, easing: null, onCompelte : function():void { _moving = false; }});
-			}
-		}
-		
-		private function tweenToPointGun(point:Point):void {
-			if (!_moving) {
-				TweenMax.to(tank.gun, .3, {x : point.x, y:point.y, easing: null, onCompelte : function():void { _moving = false; }});
+				TweenMax.to(tank, .3, {x : point.x, y:point.y, ease: null, onComplete : function():void { _moving = false; }});
 			}
 		}
 		
 		private function canMove():Boolean {
-			const point:Point = _direction.tickPoint(new Point(tank.tankBase.x, tank.tankBase.y));
+			const point:Point = _direction.tickPoint(new Point(tank.x, tank.y));
 			
 			if (point.x / GameController.CELL < 0 || point.x / GameController.CELL > MapMatrix.MATRIX_WIDTH) { return false; }
 			if (point.y / GameController.CELL < 0 || point.y / GameController.CELL > MapMatrix.MATRIX_HEIGHT) { return false; }

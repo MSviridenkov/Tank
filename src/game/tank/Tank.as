@@ -11,7 +11,7 @@ package game.tank {
 			tankBase = new TankBaseView();
 			this.addChild(gun);
 			this.addChild(tankBase);
-			gunController = new GunController(gun);
+			gunController = new GunController(gun, this);
 		}
 	}
 }
