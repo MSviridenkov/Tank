@@ -1,20 +1,16 @@
 package game {
-	import flash.display.Sprite;
-	import flash.geom.ColorTransform;
-	import flash.geom.Transform;
-	
 	import game.matrix.MapMatrix;
+	import flash.display.Sprite;
 	import game.tank.BulletsController;
 	import game.tank.TankController;
-	import game.tank.Target;
 	import game.tank.TargetsController;
 
 	public class GameController {
-		private var _target:Target;
 		private var _container:Sprite;
 		private var _bulletsController:BulletsController;
 		private var _tankController:TankController;
 		private var _targetsController:TargetsController;
+		private var _mapMatrix:MapMatrix;
 		
 		public static const CELL:int = 20;
 		
@@ -29,6 +25,8 @@ package game {
 			_bulletsController = new BulletsController(_container);
 			_tankController = new TankController(_container, _bulletsController);
 			_targetsController = new TargetsController(_container, _bulletsController);
+			_mapMatrix = new MapMatrix(_container);
+			_mapMatrix.drawMatrix();
 		}
 	}
 }

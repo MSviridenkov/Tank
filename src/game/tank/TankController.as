@@ -43,6 +43,7 @@ package game.tank {
 		}
 		
 		public function go(direction:uint):void {
+			if (_moving) { return; }
 			_direction.value = direction;
 			if (!canMove()) { return; }
 			const nextPoint:Point = _direction.tickPoint(new Point(tank.x, tank.y));
@@ -51,11 +52,14 @@ package game.tank {
 		}
 		
 		public function shot(point:Point):void {
+			tank.gunController.gunRotation( (new Point(point.x, point.y)));
 			_bulletsController.pushBullet(new Point(tank.x, tank.y), point);
+			_bulletsController.bulletRotate(tank.gunController.gunRot);
 		}
 		
 		private function tweenToPointTank(point:Point):void {
 			if (!_moving) {
+				_moving = true;
 				TweenMax.to(tank, .3, {x : point.x, y:point.y, ease: null, onComplete : function():void { _moving = false; }});
 			}
 		}

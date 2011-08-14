@@ -1,5 +1,4 @@
 package game.tank {
-	import flash.display.Sprite;
 	import flash.geom.Point;
 
 	public class GunController {

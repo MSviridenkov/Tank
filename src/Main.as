@@ -2,12 +2,9 @@ package {
 	import flash.display.Sprite;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	import flash.geom.ColorTransform;
 	import flash.geom.Point;
-	import flash.geom.Transform;
 	
 	import game.GameController;
-	import game.tank.TankController;
 	import game.tank.TankDirection;
 	
 	[SWF(width=600, height=600, frameRate=25)]
@@ -27,8 +24,6 @@ package {
 		
 		private function onMouseClick(event:MouseEvent):void {
 			gameController.tankController.shot(new Point(event.stageX, event.stageY));
-			gameController.tankController.tank.gunController.gunRotation( (new Point(event.stageX, event.stageY)));
-			gameController.tankController._bulletsController.bulletRotate(gameController.tankController.tank.gunController.gunRot);
 		}
 		
 		private function onKeyDown(event:KeyboardEvent):void {
