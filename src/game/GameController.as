@@ -1,4 +1,5 @@
 package game {
+	import game.mapObjects.MapObjectsController;
 	import game.matrix.MapMatrix;
 	import flash.display.Sprite;
 	import game.tank.BulletsController;
@@ -11,6 +12,7 @@ package game {
 		private var _tankController:TankController;
 		private var _targetsController:TargetsController;
 		private var _mapMatrix:MapMatrix;
+		private var _mapObjectsController:MapObjectsController;
 		
 		public static const CELL:int = 20;
 		
@@ -27,6 +29,8 @@ package game {
 			_targetsController = new TargetsController(_container, _bulletsController);
 			_mapMatrix = new MapMatrix(_container);
 			_mapMatrix.drawMatrix();
+			_mapObjectsController = new MapObjectsController(_mapMatrix, _container);
+			_mapObjectsController.drawObjects();
 		}
 	}
 }

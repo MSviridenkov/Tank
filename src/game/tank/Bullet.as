@@ -1,10 +1,5 @@
 package game.tank {
 	import flash.display.Sprite;
-	import flash.events.TimerEvent;
-	import flash.geom.ColorTransform;
-	import flash.geom.Transform;
-	import flash.utils.Timer;
-	
 	
 	public class Bullet extends Sprite {
 		

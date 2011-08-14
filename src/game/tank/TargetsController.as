@@ -11,7 +11,6 @@ package game.tank {
 		private var _targets:Vector.<Target>;
 		private var _container:Sprite;
 		private var _bulletsController:BulletsController;
-		private var _gameController:GameController;
 		
 		public function TargetsController(container:Sprite, bulletsController:BulletsController) {
 			_container = container;

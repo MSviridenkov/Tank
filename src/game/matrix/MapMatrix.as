@@ -13,24 +13,24 @@ package game.matrix {
 			_container = container;
 		}
 		
+		public function get matrix():Vector.<Vector.<int>> {
+			return _matrix;
+		}
+		
 		public function drawMatrix():void {
 			_container.graphics.lineStyle(1, 0xffaf00, .4);
-			for (var i:int = 0; i < MATRIX_WIDTH; ++i) {
+			for (var i:int = 0; i <= MATRIX_WIDTH; ++i) {
 				_container.graphics.moveTo(i * GameController.CELL, 0);
 				_container.graphics.lineTo(i * GameController.CELL, MATRIX_HEIGHT * GameController.CELL);
 			}
-			for (var j:int = 0; j < MATRIX_HEIGHT; ++j) {
+			for (var j:int = 0; j <= MATRIX_HEIGHT; ++j) {
 				_container.graphics.moveTo(0, j * GameController.CELL);
 				_container.graphics.lineTo(MATRIX_WIDTH * GameController.CELL, j * GameController.CELL);
 			}
 		}
 		
-		public function addTankPos(x:int, y:int):void {
-			_matrix[x][y] = MatrixItemIds.TANK;
-		}
-		
 		public function cleanCell(x:int, y:int):void {
-			_matrix[x][y] = 0;
+			_matrix[x][y] = MatrixItemIds.EMPTY;
 		}
 		
 		private function createMatrix():void {
@@ -41,7 +41,8 @@ package game.matrix {
 			
 			for each (var vect:Vector.<int> in _matrix) {
 				for (var j:int = 0; j < MATRIX_HEIGHT; ++j) {
-					vect.push(0);
+					Math.random() > .1 ? vect.push(MatrixItemIds.EMPTY) :
+																vect.push(MatrixItemIds.STONE);
 				}
 			}
 		}
