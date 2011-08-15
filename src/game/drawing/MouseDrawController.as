@@ -70,6 +70,7 @@ package game.drawing {
 				_drawingContainer.graphics.clear();
 				_path = null;
 			}
+			if (_drawingContainer.mask) { _drawingContainer.mask = null; }
 		}
 		
 		private function onMouseDown(event:MouseEvent):void {
@@ -104,7 +105,7 @@ package game.drawing {
 		
 		private function createMask():void {
 			_maskForRemove = new Shape;
-			_maskForRemove.graphics.beginFill(0x000000);
+			_maskForRemove.graphics.beginFill(0xffffff);
 			for each (var point:Point in _path) {
 				_maskForRemove.graphics.drawRect(point.x * GameController.CELL - GameController.CELL/2,
 																						point.y * GameController.CELL - GameController.CELL/2,

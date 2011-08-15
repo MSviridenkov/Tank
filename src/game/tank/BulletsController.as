@@ -44,6 +44,7 @@ package game.tank {
 		private function getCompleteBulletFunction(bullet:Bullet):Function {
 			return function ():void {
 				_container.removeChild(bullet);
+				removeFromVector(bullet);
 			};
 		}
 		
@@ -55,11 +56,15 @@ package game.tank {
 			}
 		}
 		
+		private function removeFromVector(bullet:Bullet):void {
+			var indexbullet:int = _bullets.indexOf(bullet);
+			if (indexbullet != -1) { _bullets.splice(indexbullet, 1); }
+		}
+		
 		private function removeBulletAndTarget(bullet:Bullet, target:Target):void {
 			_container.removeChild(bullet);
 			killTweenMax(bullet);
-			var indexbullet:int = _bullets.indexOf(bullet);
-			_bullets.splice(indexbullet, 1);
+			removeFromVector(bullet)
 			_container.removeChild(target);
 			var indextarget:int = _targets.indexOf(target);
 			_targets.splice(indextarget, 1);

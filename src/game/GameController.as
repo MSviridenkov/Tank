@@ -16,7 +16,7 @@ package game {
 		private var _mapObjectsController:MapObjectsController;
 		private var _mouseDrawController:MouseDrawController;
 		
-		public static const CELL:int = 20;
+		public static const CELL:int = 40;
 		
 		public function GameController(c:Sprite):void {
 			_container = c;
@@ -26,9 +26,9 @@ package game {
 		public function get tankController():TankController { return _tankController; }
 		
 		private function initControllers():void {
-			//_bulletsController = new BulletsController(_container);
-			//_tankController = new TankController(_container, _bulletsController);
-			//_targetsController = new TargetsController(_container, _bulletsController);
+			_bulletsController = new BulletsController(_container);
+			_tankController = new TankController(_container, _bulletsController);
+			_targetsController = new TargetsController(_container, _bulletsController);
 			_mapMatrix = new MapMatrix(_container);
 			_mapMatrix.drawMatrix();
 			//_mapObjectsController = new MapObjectsController(_mapMatrix, _container);
