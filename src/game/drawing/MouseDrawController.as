@@ -95,10 +95,11 @@ package game.drawing {
 		private function newPathAndShow():void {
 			_drawingContainer.graphics.clear();
 			_drawingContainer.graphics.lineStyle(2, 0x00ff00);
-			_drawingContainer.graphics.moveTo(_path[0].x * GameController.CELL, 
-																				_path[0].y * GameController.CELL);
+			_drawingContainer.graphics.moveTo(_path[0].x * cellWidth + cellWidth/2, 
+																				_path[0].y * cellWidth + cellWidth/2);
 			for each (var point:Point in _path) {
-				_drawingContainer.graphics.lineTo(point.x * GameController.CELL, point.y * GameController.CELL);
+				_drawingContainer.graphics.lineTo(point.x * cellWidth + cellWidth/2,
+																					point.y * cellWidth + cellWidth/2);
 			}
 			TweenMax.to(_drawingContainer, .08, {alpha: 1});
 		}
@@ -121,6 +122,8 @@ package game.drawing {
 				trace("x: " + point.x + ", y: " + point.y);
 			}
 		}
+		
+		private function get cellWidth():int { return GameController.CELL; }
 
 	}
 }

@@ -37,8 +37,8 @@ package game.tank {
 			container.addChild(tank);
 			_cellX = _startX/GameController.CELL;
 			_cellY = _startY/GameController.CELL;
-			tank.x = _startX;
-			tank.y = _startY;
+			tank.x = _cellY * GameController.CELL + GameController.CELL/2;
+			tank.y = _cellX * GameController.CELL + GameController.CELL/2;
 			_direction = new TankDirection(TankDirection.UP_DIR);
 		}
 		
