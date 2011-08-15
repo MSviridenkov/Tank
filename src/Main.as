@@ -23,7 +23,9 @@ package {
 		}
 		
 		private function onMouseClick(event:MouseEvent):void {
-			gameController.tankController.shot(new Point(event.stageX, event.stageY));
+			if (gameController && gameController.tankController) {
+				gameController.tankController.shot(new Point(event.stageX, event.stageY));
+			}
 		}
 		
 		private function onKeyDown(event:KeyboardEvent):void {
@@ -31,11 +33,10 @@ package {
 					event.charCode == "a".charCodeAt(0) ||
 					event.charCode == "d".charCodeAt(0) ||
 					event.charCode == "w".charCodeAt(0)){
-				onMoveKey(event);
+				if (gameController && gameController.tankController) {
+					onMoveKey(event);
+				}
 			}
-			//else if (event.charCode == "q".charCodeAt(0)){
-			//	gameController.tankController.shot();
-			//}
 		}
 			
 			private function onMoveKey(event:KeyboardEvent):void {

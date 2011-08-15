@@ -1,4 +1,5 @@
 package game.matrix {
+	import flash.geom.Point;
 	import game.GameController;
 	import flash.display.Sprite;
 	public class MapMatrix {
@@ -15,6 +16,11 @@ package game.matrix {
 		
 		public function get matrix():Vector.<Vector.<int>> {
 			return _matrix;
+		}
+		
+		public function getMatrixPoint(point:Point):Point{
+			return new Point(int((point.x + GameController.CELL/2) / GameController.CELL),
+												int((point.y + GameController.CELL/2) / GameController.CELL));
 		}
 		
 		public function drawMatrix():void {
