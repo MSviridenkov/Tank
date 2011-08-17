@@ -1,4 +1,6 @@
 package game.tank {
+	import com.greensock.easing.Linear;
+	import com.greensock.TimelineMax;
 	import com.greensock.TweenMax;
 	
 	import flash.display.Sprite;
@@ -20,6 +22,10 @@ package game.tank {
 		private var _cellX:int;
 		private var _cellY:int;
 		
+		private var _currentPath:Vector.<Point>;
+		
+		private var _movingTimeline:TimelineMax;
+		
 		private var _moving:Boolean; //true - tank moving now, false - else
 		
 		public static const LEFT_ROT:int = 270;
@@ -32,6 +38,7 @@ package game.tank {
 		public function TankController(container:Sprite, bulletsController:BulletsController):void {
 			_moving = false;
 			tank = new Tank();
+			_movingTimeline = new TimelineMax();
 			_container = container;
 			_bulletsController = bulletsController;
 			container.addChild(tank);
@@ -40,6 +47,43 @@ package game.tank {
 			tank.x = _cellY * GameController.CELL + GameController.CELL/2;
 			tank.y = _cellX * GameController.CELL + GameController.CELL/2;
 			_direction = new TankDirection(TankDirection.UP_DIR);
+		}
+		
+		public function xByCell(cellX:int):Number {
+			return cellX * GameController.CELL + GameController.CELL/2;
+		}
+		public function yByCell(cellY:int):Number {
+			return cellY * GameController.CELL + GameController.CELL/2;
+		}
+		
+		public function isPointOnTank(point:Point):Boolean {
+			return tank.hitTestPoint(point.x, point.y);
+		}
+/*		
+		public function goWithPath(path:Vector.<Point>):void {
+			if (!path || path.length < 2) { return; }
+			_currentPath = path;
+			var tween:TweenMax;
+			var timeline:TimelineMax = new TimelineMax();
+			for (var i:int = 1; i < path.length; ++i) {
+				tween = new TweenMax(tank, .9, {x : xByCell(path[i].x), y : yByCell(path[i].y)});
+				timeline.append(tween);
+			}
+		}
+		 * 
+		 */
+		 
+		public function readyForMoving():void {
+			_movingTimeline.kill();
+			_movingTimeline = new TimelineMax();
+		}
+		
+		public function addPointToMovePath(point:Point):void {
+			if (!point) { return; }
+			_movingTimeline.append(new TweenMax(tank, .9, 
+						{x : xByCell(point.x), y : yByCell(point.y), 
+						ease : Linear.easeNone}));
+			_movingTimeline.play();
 		}
 		
 		public function go(direction:uint):void {

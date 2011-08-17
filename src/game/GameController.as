@@ -1,4 +1,5 @@
 package game {
+	import game.events.DrawingControllerEvent;
 	import game.drawing.MouseDrawController;
 	import game.mapObjects.MapObjectsController;
 	import game.matrix.MapMatrix;
@@ -21,6 +22,7 @@ package game {
 		public function GameController(c:Sprite):void {
 			_container = c;
 			initControllers();
+			listenControllers();
 		}
 		
 		public function get tankController():TankController { return _tankController; }
@@ -34,6 +36,25 @@ package game {
 			//_mapObjectsController = new MapObjectsController(_mapMatrix, _container);
 			//_mapObjectsController.drawObjects();
 			_mouseDrawController = new MouseDrawController(_container, _mapMatrix);
+		}
+		
+		private function listenControllers():void {
+			_mouseDrawController.addEventListener(DrawingControllerEvent.WANT_START_DRAW, onWantStartDraw);
+			_mouseDrawController.addEventListener(DrawingControllerEvent.NEW_MOVE_POINT, onNewMovePoint);
+		}
+		
+//		private function onDrawingComplete(event:DrawingControllerEvent):void {
+//			_tankController.goWithPath(_mouseDrawController.tankPath);
+//		}
+		private function onNewMovePoint(event:DrawingControllerEvent):void {
+			_tankController.addPointToMovePath(_mouseDrawController.getLastMovePoint());
+		}
+		
+		private function onWantStartDraw(event:DrawingControllerEvent):void {
+			if (_tankController.isPointOnTank(_mouseDrawController.currentMousePoint)) {
+				_tankController.readyForMoving();
+				_mouseDrawController.startDrawTankPath();
+			}
 		}
 	}
 }

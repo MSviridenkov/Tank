@@ -1,4 +1,5 @@
 package game.tank {
+	import game.GameController;
 	import flash.display.Sprite;
 
 	public class Tank extends Sprite {
@@ -13,5 +14,14 @@ package game.tank {
 			this.addChild(tankBase);
 			gunController = new GunController(gun, this);
 		}
+		/*
+		override public function set x(value:Number):void {
+			super.x = value * GameController.CELL + GameController.CELL/2;
+		}
+		override public function set y(value:Number):void {
+			super.y = value * GameController.CELL + GameController.CELL/2;
+		}
+		// * *
+		// */
 	}
 }
