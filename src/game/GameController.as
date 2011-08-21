@@ -33,8 +33,8 @@ package game {
 			_mouseDrawController = new MouseDrawController(_container, _mapMatrix);
 			_bulletsController = new BulletsController(_container);
 			_tankController = new TankController(_container, _bulletsController);
-			_targetsController = new TargetsController(_container, _bulletsController);
-			_mapObjectsController = new MapObjectsController(_mapMatrix, _container);
+			_targetsController = new TargetsController(_container, _bulletsController, _tankController);
+			_mapObjectsController = new MapObjectsController(_mapMatrix, _container, _tankController);
 			_mapObjectsController.drawObjects();
 		}
 		
