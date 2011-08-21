@@ -67,10 +67,10 @@ package game.drawing {
 		}
 		
 		private function drawRectangle():void {
-			_container.graphics.beginFill(0x000000, .2);
+			_container.graphics.beginFill(0xffffff, .0);
 			_container.graphics.drawRect(0, 0, 
 													MapMatrix.MATRIX_WIDTH*GameController.CELL,
-													MapMatrix.MATRIX_HEIGHT * GameController.CELL);	
+													MapMatrix.MATRIX_HEIGHT*GameController.CELL);	
 			_container.graphics.endFill();
 		}
 		

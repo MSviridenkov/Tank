@@ -2,11 +2,14 @@ package game.tank {
 	import com.greensock.easing.Linear;
 	import com.greensock.TimelineMax;
 	import com.greensock.TweenMax;
+	import com.greensock.easing.Linear;
 	
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
 	import game.GameController;
+	import game.mapObjects.MapObjectsController;
+	import game.mapObjects.Stone;
 	import game.matrix.MapMatrix;
 
 	public class TankController {
@@ -14,6 +17,9 @@ package game.tank {
 		
 		private var _direction:TankDirection;
 		private var _container:Sprite;
+		private var _stones:Vector.<Stone>;
+		private var _targets:Vector.<Target>;
+		
 		public var _bulletsController:BulletsController;
 		
 		private var _startX:Number = 300;
@@ -104,7 +110,10 @@ package game.tank {
 		private function tweenToPointTank(point:Point):void {
 			if (!_moving) {
 				_moving = true;
-				TweenMax.to(tank, .3, {x : point.x, y:point.y, ease: null, onComplete : function():void { _moving = false; }});
+				TweenMax.to(tank, .3, {x : point.x, y:point.y,
+															 ease: Linear.easeNone,
+															 onUpdate: onTankTweenUpdate,
+															 onComplete : function ():void { _moving = false;}});
 			}
 		}
 		
@@ -114,6 +123,23 @@ package game.tank {
 			if (point.x / GameController.CELL < 0 || point.x / GameController.CELL > MapMatrix.MATRIX_WIDTH) { return false; }
 			if (point.y / GameController.CELL < 0 || point.y / GameController.CELL > MapMatrix.MATRIX_HEIGHT) { return false; }
 			return true;
+		}
+		
+		public function addStone(stones:Vector.<Stone>):void {
+			_stones = stones;
+		}
+		
+		public function addTarget(targets:Vector.<Target>):void {
+			_targets = targets;
+		}
+		
+		private function onTankTweenUpdate ():void {
+			/*for each (var stone:Stone in _stones){
+				if (tank.hitTestObject(stone) == true){ _moving = false;}
+			}*/
+			for each (var target:Target in _targets){
+				if (tank.hitTestObject(target) == true){}
+			}
 		}
 		
 	}

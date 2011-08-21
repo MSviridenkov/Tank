@@ -30,11 +30,11 @@ package game {
 		private function initControllers():void {
 			_bulletsController = new BulletsController(_container);
 			_tankController = new TankController(_container, _bulletsController);
-			_targetsController = new TargetsController(_container, _bulletsController);
+			_targetsController = new TargetsController(_container, _bulletsController, _tankController);
 			_mapMatrix = new MapMatrix(_container);
 			_mapMatrix.drawMatrix();
-			//_mapObjectsController = new MapObjectsController(_mapMatrix, _container);
-			//_mapObjectsController.drawObjects();
+			_mapObjectsController = new MapObjectsController(_mapMatrix, _container, _tankController);
+			_mapObjectsController.drawObjects();
 			_mouseDrawController = new MouseDrawController(_container, _mapMatrix);
 		}
 		

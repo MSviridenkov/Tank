@@ -11,12 +11,15 @@ package game.tank {
 		private var _targets:Vector.<Target>;
 		private var _container:Sprite;
 		private var _bulletsController:BulletsController;
+		private var _tankController:TankController;
 		
-		public function TargetsController(container:Sprite, bulletsController:BulletsController) {
+		public function TargetsController(container:Sprite, bulletsController:BulletsController, tankController:TankController) {
 			_container = container;
 			_targets = new Vector.<Target>;
 			_bulletsController = bulletsController;
 			_bulletsController.addTarget(_targets);
+			_tankController = tankController;
+			_tankController.addTarget(_targets);
 			for (var i:int = 0; i < Math.random() * 5; i++) {
 			createTarget();
 			}

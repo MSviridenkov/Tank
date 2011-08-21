@@ -1,17 +1,21 @@
 package game.mapObjects {
 	import flash.display.Sprite;
-	import game.matrix.MatrixItemIds;
+	
 	import game.matrix.MapMatrix;
+	import game.matrix.MatrixItemIds;
+	import game.tank.TankController;
 
 	public class MapObjectsController {
 		private var _mapMatrix:MapMatrix;
 		private var _container:Sprite;
 		private var _stones:Vector.<Stone>;
+		private var _tankController:TankController;
 		
-		public function MapObjectsController(matrix:MapMatrix, container:Sprite):void {
+		public function MapObjectsController(matrix:MapMatrix, container:Sprite, tankController:TankController):void {
 			super();
 			_mapMatrix = matrix;
 			_container = container;
+			_tankController = tankController;
 		}
 		
 		public function drawObjects():void {

@@ -5,9 +5,9 @@ package game.tank {
 	import flash.geom.Point;
 
 	public class BulletsController {
-		private var _bullets:Vector.<Bullet>; //vector of bullets on scenes
-		private var _container:Sprite; // container for bullets
-		private var _targets:Vector.<Target>; //мишень, пока одна, в итоге должен быть массив мишеней
+		private var _bullets:Vector.<Bullet>;
+		private var _container:Sprite;
+		private var _targets:Vector.<Target>;
 		private var _p:Point;
 		private var _tPoint:Point;
 		private var bullet:Bullet;
@@ -35,7 +35,7 @@ package game.tank {
 		}
 		
 		private function startBulletTween(bullet:Bullet, targetPoint:Point):void {
-			TweenMax.to(bullet, 1.3, {x : targetPoint.x, y : targetPoint.y, 
+			TweenMax.to(bullet, 1.3, {x : targetPoint.x, y : targetPoint.y,
 																onUpdate : onBulletTweenUpdate,
 																onUpdateParams : [bullet],
 																onComplete : getCompleteBulletFunction(bullet)} );

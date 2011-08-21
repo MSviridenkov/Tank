@@ -24,7 +24,7 @@ package game.matrix {
 		}
 		
 		public function drawMatrix():void {
-			_container.graphics.lineStyle(2, 0xffaf00, .2);
+			_container.graphics.lineStyle(1, 0x00BBFF, .1);
 			for (var i:int = 0; i <= MATRIX_WIDTH; ++i) {
 				_container.graphics.moveTo(i * GameController.CELL, 0);
 				_container.graphics.lineTo(i * GameController.CELL, MATRIX_HEIGHT * GameController.CELL);
