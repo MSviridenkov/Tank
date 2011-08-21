@@ -1,4 +1,5 @@
 package game.matrix {
+	import flash.geom.Rectangle;
 	import flash.geom.Point;
 	import game.GameController;
 	import flash.display.Sprite;
@@ -21,6 +22,11 @@ package game.matrix {
 		public function getMatrixPoint(point:Point):Point{
 			return new Point(int((point.x ) / GameController.CELL),
 												int((point.y) / GameController.CELL));
+		}
+		
+		public function getStageRectangle(point:Point):Rectangle {
+			return new Rectangle (point.x * GameController.CELL, point.y * GameController.CELL,
+														GameController.CELL, GameController.CELL);
 		}
 		
 		public function drawMatrix():void {

@@ -31,8 +31,8 @@ package game.tank {
 			var _target:Target = new Target();
 			var rndX:int = Math.random() * MapMatrix.MATRIX_WIDTH;
 			var rndY:int = Math.random() * MapMatrix.MATRIX_HEIGHT;
-			_target.x = rndX * GameController.CELL;
-			_target.y = rndY * GameController.CELL;
+			_target.x = rndX * GameController.CELL + GameController.CELL/2;
+			_target.y = rndY * GameController.CELL + GameController.CELL/2;
 			_targets.push(_target);
 			_container.addChild(_target);
 			//_matrix[rndX][rndY] = MatrixItemIds.TARGET;

@@ -82,15 +82,27 @@ package game.tank {
 		public function readyForMoving():void {
 			_movingTimeline.kill();
 			_movingTimeline = new TimelineMax();
+			//_currentPath = new Vector.<Point>;
 		}
 		
 		public function addPointToMovePath(point:Point):void {
 			if (!point) { return; }
 			_movingTimeline.append(new TweenMax(tank, .9, 
 						{x : xByCell(point.x), y : yByCell(point.y), 
-						ease : Linear.easeNone}));
+						ease : Linear.easeNone,
+						onStart : _direction.rotateIfNeed,
+						onStartParams : [tank, point]}));
 			_movingTimeline.play();
 		}
+/*		
+		private function checkRotate(nPoint:Point, pPoint:Point):void {
+			if (_direction.needRotate(nPoint, pPoint)) {
+				TweenMax.to(tank.tankBase, .5, 
+										_direction.getRotationTween(nPoint, pPoint));
+			}
+		}
+		 * 
+		 */
 		
 		public function go(direction:uint):void {
 			if (_moving) { return; }

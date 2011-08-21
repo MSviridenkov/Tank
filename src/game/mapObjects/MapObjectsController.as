@@ -1,4 +1,5 @@
 package game.mapObjects {
+	import flash.geom.Point;
 	import flash.display.Sprite;
 	
 	import game.matrix.MapMatrix;
@@ -24,15 +25,15 @@ package game.mapObjects {
 			for (var i:int = 0; i < MapMatrix.MATRIX_WIDTH; ++i) {
 				for (var j:int = 0; j < MapMatrix.MATRIX_HEIGHT; ++j) {
 					if (_mapMatrix.matrix[i][j] == MatrixItemIds.STONE) {
-						addStone(i, j);
+						addStone(new Point(i, j));
 					}
 				}
 			}
 		}
 		
-		private function addStone(mX:int, mY:int):void {
+		private function addStone(mPoint:Point):void {
 			var stone:Stone;
-			stone = new Stone(mX, mY);
+			stone = new Stone(_mapMatrix.getStageRectangle(mPoint));
 			if (!_stones) { _stones = new Vector.<Stone>(); }
 			_stones.push(stone);
 			_container.addChild(stone);

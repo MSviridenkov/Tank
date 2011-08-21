@@ -1,4 +1,6 @@
 package game.tank {
+	import game.GameController;
+	import com.greensock.TweenMax;
 	import flash.geom.Point;
 
 	public class TankDirection {
@@ -24,6 +26,32 @@ package game.tank {
 		}
 		
 		public function get rotation():uint { return _rotation; }
+		
+		public function rotateIfNeed(tank:Tank, nPoint:Point):Boolean {
+			const pPoint:Point = new Point(int(tank.x / GameController.CELL),
+																		int(tank.y / GameController.CELL));
+			if (pPoint.x == nPoint.x) {
+				if (pPoint.y > nPoint.y) {
+					if (_value != UP_DIR) { rotateTank(tank, UP_DIR); }
+				} else {
+					if (_value != DOWN_DIR) { rotateTank(tank, DOWN_DIR); }
+				}
+			} else {
+				if (pPoint.x > nPoint.x) {
+					if (_value != LEFT_DIR) { rotateTank(tank, LEFT_DIR); }
+				} else {
+					if (_value != RIGHT_DIR) {rotateTank(tank, RIGHT_DIR); }
+				}
+			}
+			return false;
+		}
+		
+		private function rotateTank(tank:Tank, dir:uint):void {
+			_value = dir;
+			updateRotation();
+			TweenMax.to(tank.tankBase, .5, {rotation : _rotation});
+			
+		}
 		
 		public function tickPoint(point:Point):Point {
 			const res:Point = point;

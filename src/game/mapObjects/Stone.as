@@ -1,26 +1,21 @@
 package game.mapObjects {
-	import game.GameController;
+	import flash.geom.Rectangle;
 	import flash.display.Sprite;
 
 	public class Stone extends Sprite {
-		public var mX:int;
-		public var mY:int;
+		private var _rect:Rectangle;
 		
-		public function Stone(mX:int, mY:int) {
+		public function Stone(rect:Rectangle) {
 			super();
-			this.mX = mX;
-			this.mY = mY;
-			this.x = GameController.CELL * mX;
-			this.y = GameController.CELL * mY;
+			_rect = rect;
+			this.x = rect.x;
+			this.y = rect.y;
 			draw();
 		}
 		
 		private function draw():void {
-			this.graphics.beginFill(0xbabfff);
-			this.graphics.drawRect(-GameController.CELL/2,
-															-GameController.CELL/2,
-															GameController.CELL,
-															GameController.CELL);
+			this.graphics.beginFill(0x4ff11f, .6);
+			this.graphics.drawRoundRect(0, 0, _rect.width, _rect.height, _rect.width, _rect.height);
 			this.graphics.endFill();
 		}
 	}
