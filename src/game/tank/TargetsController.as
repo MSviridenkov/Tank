@@ -1,6 +1,7 @@
 package game.tank {
 	import flash.display.Sprite;
 	import flash.events.TimerEvent;
+	import flash.geom.Point;
 	import flash.utils.Timer;
 	
 	import game.GameController;
@@ -20,9 +21,7 @@ package game.tank {
 			_bulletsController.addTarget(_targets);
 			_tankController = tankController;
 			_tankController.addTarget(_targets);
-			for (var i:int = 0; i < Math.random() * 5; i++) {
-			createTarget();
-			}
+			for (var i:int = 0; i < Math.random() * 5; i++) { createTarget(); }
 			initTimer();
 			startTimer();
 		}
@@ -35,6 +34,8 @@ package game.tank {
 			_target.y = rndY * GameController.CELL + GameController.CELL/2;
 			_targets.push(_target);
 			_container.addChild(_target);
+			trace (_target.x, _target.y);
+			for each (var target:Target in _targets) { _tankController.addTargetPoint(new Point (target.x, target.y)) }
 			//_matrix[rndX][rndY] = MatrixItemIds.TARGET;
 		}
 		

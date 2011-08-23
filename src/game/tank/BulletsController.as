@@ -39,7 +39,6 @@ package game.tank {
 			_bullets.push(bullet);
 			_container.addChild(bullet);
 			startMove(targetPoint);
-			trace (dlinaX, dlinaY, angle, Math.sin(angle));
 		}
 		
 		public function bulletRotate(rotation:int):void {
@@ -47,7 +46,7 @@ package game.tank {
 		}
 		
 		private function startBulletTween(bullet:Bullet, targetPoint:Point):void {
-			TweenMax.to(bullet, 10, {x : targetPoint.x, y : targetPoint.y,
+			TweenMax.to(bullet, 1.3, {x : targetPoint.x, y : targetPoint.y,
 																onUpdate : onBulletTweenUpdate,
 																onUpdateParams : [bullet],
 																onComplete : getCompleteBulletFunction(bullet)} );

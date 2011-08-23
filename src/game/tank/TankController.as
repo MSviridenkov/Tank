@@ -1,5 +1,4 @@
 package game.tank {
-	import com.greensock.easing.Linear;
 	import com.greensock.TimelineMax;
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Linear;
@@ -17,8 +16,9 @@ package game.tank {
 		
 		private var _direction:TankDirection;
 		private var _container:Sprite;
-		private var _stones:Vector.<Stone>;
 		private var _targets:Vector.<Target>;
+		private var _targetsPoints:Vector.<Point>;
+		private var _targetPoint:Point;
 		
 		public var _bulletsController:BulletsController;
 		
@@ -53,6 +53,7 @@ package game.tank {
 			tank.x = _cellY * GameController.CELL + GameController.CELL/2;
 			tank.y = _cellX * GameController.CELL + GameController.CELL/2;
 			_direction = new TankDirection(TankDirection.UP_DIR);
+			_targetsPoints = new Vector.<Point>();
 		}
 		
 		public function xByCell(cellX:int):Number {
@@ -118,14 +119,21 @@ package game.tank {
 			_bulletsController.pushBullet(new Point(tank.x, tank.y), point, tank.gunController.gunRot);
 			_bulletsController.bulletRotate(tank.gunController.gunRot);
 		}
+
+		public function addTarget(targets:Vector.<Target>):void {
+			_targets = targets;
+		}
+		
+		public function addTargetPoint(tpoint:Point):void {
+			_targetsPoints.unshift(tpoint);
+		}
 		
 		private function tweenToPointTank(point:Point):void {
 			if (!_moving) {
 				_moving = true;
 				TweenMax.to(tank, .3, {x : point.x, y:point.y,
 															 ease: Linear.easeNone,
-															 onUpdate: onTankTweenUpdate,
-															 onComplete : function ():void { _moving = false;}});
+															 onComplete : function ():void { _moving = false; }});
 			}
 		}
 		
@@ -134,25 +142,11 @@ package game.tank {
 			
 			if (point.x / GameController.CELL < 0 || point.x / GameController.CELL > MapMatrix.MATRIX_WIDTH) { return false; }
 			if (point.y / GameController.CELL < 0 || point.y / GameController.CELL > MapMatrix.MATRIX_HEIGHT) { return false; }
+			for each (var targetPoint:Point in _targetsPoints) {
+				if (point.x == targetPoint.x && point.y == targetPoint.y) {return false;}
+			}
+			trace ("point:", point.x, point.y, "tank",tank.x, tank.y, "target", targetPoint.x, targetPoint.y )
 			return true;
 		}
-		
-		public function addStone(stones:Vector.<Stone>):void {
-			_stones = stones;
-		}
-		
-		public function addTarget(targets:Vector.<Target>):void {
-			_targets = targets;
-		}
-		
-		private function onTankTweenUpdate ():void {
-			/*for each (var stone:Stone in _stones){
-				if (tank.hitTestObject(stone) == true){ _moving = false;}
-			}*/
-			for each (var target:Target in _targets){
-				if (tank.hitTestObject(target) == true){}
-			}
-		}
-		
 	}
 }
