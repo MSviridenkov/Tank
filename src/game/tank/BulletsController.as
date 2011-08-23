@@ -21,13 +21,25 @@ package game.tank {
 			_targets = targets;
 		}
 		
-		public function pushBullet(point:Point, targetPoint:Point):void {
+		public function pushBullet(point:Point, targetPoint:Point, gunRot:int):void {
 			_p = point;
 			_tPoint = targetPoint;
-			bullet = new Bullet (_p.x, _p.y);
+			var angle:int = gunRot;
+			var dlinaX:int;
+			var dlinaY:int;
+			if (-90<angle<90){
+				dlinaX = Math.sin(angle/180*Math.PI) * 25;
+				dlinaY = Math.cos(angle/180*Math.PI) * 25;
+			}
+			else{
+				dlinaX = Math.sin(angle/180*Math.PI*(-1) + 180) * 25;
+				dlinaY = Math.cos(angle/180*Math.PI*(-1) + 180) * 25;
+			}
+			bullet = new Bullet (_p.x + dlinaX, _p.y - dlinaY);
 			_bullets.push(bullet);
 			_container.addChild(bullet);
 			startMove(targetPoint);
+			trace (dlinaX, dlinaY, angle, Math.sin(angle));
 		}
 		
 		public function bulletRotate(rotation:int):void {
@@ -35,7 +47,7 @@ package game.tank {
 		}
 		
 		private function startBulletTween(bullet:Bullet, targetPoint:Point):void {
-			TweenMax.to(bullet, 1.3, {x : targetPoint.x, y : targetPoint.y,
+			TweenMax.to(bullet, 10, {x : targetPoint.x, y : targetPoint.y,
 																onUpdate : onBulletTweenUpdate,
 																onUpdateParams : [bullet],
 																onComplete : getCompleteBulletFunction(bullet)} );

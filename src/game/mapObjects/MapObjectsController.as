@@ -10,13 +10,11 @@ package game.mapObjects {
 		private var _mapMatrix:MapMatrix;
 		private var _container:Sprite;
 		private var _stones:Vector.<Stone>;
-		private var _tankController:TankController;
 		
-		public function MapObjectsController(matrix:MapMatrix, container:Sprite, tankController:TankController):void {
+		public function MapObjectsController(matrix:MapMatrix, container:Sprite):void {
 			super();
 			_mapMatrix = matrix;
 			_container = container;
-			_tankController = tankController;
 		}
 		
 		public function drawObjects():void {

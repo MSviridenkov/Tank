@@ -115,7 +115,7 @@ package game.tank {
 		
 		public function shot(point:Point):void {
 			tank.gunController.gunRotation( (new Point(point.x, point.y)));
-			_bulletsController.pushBullet(new Point(tank.x, tank.y), point);
+			_bulletsController.pushBullet(new Point(tank.x, tank.y), point, tank.gunController.gunRot);
 			_bulletsController.bulletRotate(tank.gunController.gunRot);
 		}
 		
