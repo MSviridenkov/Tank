@@ -12,6 +12,7 @@ package game {
 		private var _container:Sprite;
 		private var _bulletsController:BulletsController;
 		private var _tankController:TankController;
+		private var _tankMovementListener:TankMovementListener;
 		private var _targetsController:TargetsController;
 		private var _mapMatrix:MapMatrix;
 		private var _mapObjectsController:MapObjectsController;
@@ -32,10 +33,11 @@ package game {
 			_mapMatrix.drawMatrix();
 			_mouseDrawController = new MouseDrawController(_container, _mapMatrix);
 			_bulletsController = new BulletsController(_container);
-			_tankController = new TankController(_container, _bulletsController);
+			_tankController = new TankController(_container, _bulletsController, _mapMatrix);
 			_targetsController = new TargetsController(_container, _bulletsController, _tankController);
 			_mapObjectsController = new MapObjectsController(_mapMatrix, _container);
 			_mapObjectsController.drawObjects();
+			_tankMovementListener = new TankMovementListener(_tankController, _mapObjectsController);
 		}
 		
 		private function listenControllers():void {

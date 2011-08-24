@@ -1,4 +1,8 @@
 package game.tank {
+	import game.events.TankEvent;
+	import flash.events.EventDispatcher;
+	import com.greensock.core.TweenCore;
+	import com.greensock.easing.Linear;
 	import com.greensock.TimelineMax;
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Linear;
@@ -11,7 +15,7 @@ package game.tank {
 	import game.mapObjects.Stone;
 	import game.matrix.MapMatrix;
 
-	public class TankController {
+	public class TankController extends EventDispatcher {
 		public var tank:Tank;
 		
 		private var _direction:TankDirection;
@@ -21,6 +25,7 @@ package game.tank {
 		private var _targetPoint:Point;
 		
 		public var _bulletsController:BulletsController;
+		private var _mapMatrix:MapMatrix;
 		
 		private var _startX:Number = 300;
 		private var _startY:Number = 300;
@@ -41,17 +46,19 @@ package game.tank {
 		
 		public static const MOVE_LENGHT:int = GameController.CELL;
 		
-		public function TankController(container:Sprite, bulletsController:BulletsController):void {
+		public function TankController(container:Sprite, bulletsController:BulletsController,
+																		mapMatrix:MapMatrix):void {
 			_moving = false;
 			tank = new Tank();
 			_movingTimeline = new TimelineMax();
 			_container = container;
+			_mapMatrix = mapMatrix;
 			_bulletsController = bulletsController;
 			container.addChild(tank);
 			_cellX = _startX/GameController.CELL;
 			_cellY = _startY/GameController.CELL;
-			tank.x = _cellY * GameController.CELL + GameController.CELL/2;
-			tank.y = _cellX * GameController.CELL + GameController.CELL/2;
+			tank.x = _cellY;// * GameController.CELL + GameController.CELL/2;
+			tank.y = _cellX;// * GameController.CELL + GameController.CELL/2;
 			_direction = new TankDirection(TankDirection.UP_DIR);
 			_targetsPoints = new Vector.<Point>();
 		}
@@ -81,6 +88,7 @@ package game.tank {
 		 */
 		 
 		public function readyForMoving():void {
+			tank.updateSpeedup();
 			_movingTimeline.kill();
 			_movingTimeline = new TimelineMax();
 			//_currentPath = new Vector.<Point>;
@@ -88,12 +96,20 @@ package game.tank {
 		
 		public function addPointToMovePath(point:Point):void {
 			if (!point) { return; }
-			_movingTimeline.append(new TweenMax(tank, .9, 
-						{x : xByCell(point.x), y : yByCell(point.y), 
+			const speedCoef:Number = _mapMatrix.getSpeedForTank(point);
+			_movingTimeline.append(new TweenMax(tank, speedCoef * (.9 - tank.speedup--), 
+						{x : point.x, y : point.y, 
 						ease : Linear.easeNone,
-						onStart : _direction.rotateIfNeed,
-						onStartParams : [tank, point]}));
+						onStart : onStartMoveToPathNode,
+						onStartParams : [point],
+						onComplete : function():void { trace("complete"); }}));
 			_movingTimeline.play();
+		}
+		
+		private function onStartMoveToPathNode(point:Point):void {
+			_direction.rotateIfNeed(tank, point);
+			dispatchEvent(new TankEvent(TankEvent.COME_TO_CELL));
+			//_mapMatrix.getSpeedForTank(point);
 		}
 /*		
 		private function checkRotate(nPoint:Point, pPoint:Point):void {
@@ -115,8 +131,9 @@ package game.tank {
 		}
 		
 		public function shot(point:Point):void {
-			tank.gunController.gunRotation( (new Point(point.x, point.y)));
-			_bulletsController.pushBullet(new Point(tank.x, tank.y), point, tank.gunController.gunRot);
+			tank.gunController.gunRotation( _mapMatrix.getMatrixPoint((new Point(point.x, point.y))));
+			_bulletsController.pushBullet(_mapMatrix.getStagePoint(new Point(tank.x, tank.y)),
+																		point, tank.gunController.gunRot);
 			_bulletsController.bulletRotate(tank.gunController.gunRot);
 		}
 

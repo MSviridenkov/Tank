@@ -24,9 +24,24 @@ package game.matrix {
 												int((point.y) / GameController.CELL));
 		}
 		
+		public function getStagePoint(point:Point):Point {
+			return new Point(point.x * GameController.CELL + GameController.CELL/2,
+												point.y * GameController.CELL + GameController.CELL/2);
+		}
+		
+		public function getRandomPoint():Point {
+			return new Point(int(Math.random() * MATRIX_WIDTH),
+												int(Math.random() * MATRIX_HEIGHT));
+		}
+		
 		public function getStageRectangle(point:Point):Rectangle {
 			return new Rectangle (point.x * GameController.CELL, point.y * GameController.CELL,
 														GameController.CELL, GameController.CELL);
+		}
+		
+		public function getSpeedForTank(point:Point):Number {
+			if (_matrix[point.x][point.y] == 0) { return 1;
+			} else { return 1.6; }
 		}
 		
 		public function drawMatrix():void {

@@ -28,8 +28,7 @@ package game.tank {
 		public function get rotation():uint { return _rotation; }
 		
 		public function rotateIfNeed(tank:Tank, nPoint:Point):Boolean {
-			const pPoint:Point = new Point(int(tank.x / GameController.CELL),
-																		int(tank.y / GameController.CELL));
+			const pPoint:Point = new Point(tank.x, tank.y);
 			if (pPoint.x == nPoint.x) {
 				if (pPoint.y > nPoint.y) {
 					if (_value != UP_DIR) { rotateTank(tank, UP_DIR); }
