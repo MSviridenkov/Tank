@@ -1,7 +1,9 @@
 package game.tank {
-	import game.GameController;
 	import com.greensock.TweenMax;
+	
 	import flash.geom.Point;
+	
+	import game.GameController;
 
 	public class TankDirection {
 		public static const LEFT_DIR:uint = 0;
@@ -9,14 +11,13 @@ package game.tank {
 		public static const UP_DIR:uint = 2;
 		public static const DOWN_DIR:uint = 3;
 		
-		public var _rotation:uint;
+		public var _rotation:int;
 		
 		private var _value:uint;
 		
 		public function TankDirection(defaultDirection:uint) {
 			super();
-			_value = defaultDirection;
-			updateRotation();
+			value = defaultDirection;
 		}
 		
 		public function get value():uint { return _value; }
@@ -46,10 +47,25 @@ package game.tank {
 		}
 		
 		private function rotateTank(tank:Tank, dir:uint):void {
-			_value = dir;
-			updateRotation();
-			TweenMax.to(tank.tankBase, .5, {rotation : _rotation});
-			
+			const oldRotation:int = _rotation;
+			value = dir;
+			//trace("_rotation = " + _rotation + ", tank.rotation = " + tank.rotation);
+			//if (_rotation == TankController.DOWN_ROT && tank.tankBase.rotation == TankController.LEFT_ROT) {
+				//tank.tankBase.rotation = 260;
+				//trace("tank rotation changed : ", tank.tankBase.rotation);
+			//	_rotation = -180;
+			//}
+			if (_rotation == TankController.LEFT_ROT && oldRotation == TankController.DOWN_ROT_PLUS) {
+				tank.tankBase.rotation = -180;
+			}
+			TweenMax.to(tank.tankBase, 0.5, {rotation : _rotation, 
+																				onComplete : function():void {
+																											if (_rotation == TankController.DOWN_ROT_MINUS) {
+																												_rotation = TankController.DOWN_ROT_PLUS;
+																												tank.tankBase.rotation = _rotation;
+																											}
+																										}
+																					});
 		}
 		
 		public function tickPoint(point:Point):Point {
@@ -85,7 +101,8 @@ package game.tank {
 		private function updateRotation():void {
 			switch(_value) {
 				case DOWN_DIR : {
-					_rotation = TankController.DOWN_ROT;
+					_rotation = _rotation != TankController.LEFT_ROT ?
+											TankController.DOWN_ROT_PLUS : TankController.DOWN_ROT_MINUS;
 					break;
 				}
 				case LEFT_DIR : {

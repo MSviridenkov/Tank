@@ -1,16 +1,15 @@
 package game.tank {
-	import game.events.TankEvent;
-	import flash.events.EventDispatcher;
-	import com.greensock.core.TweenCore;
-	import com.greensock.easing.Linear;
 	import com.greensock.TimelineMax;
 	import com.greensock.TweenMax;
+	import com.greensock.core.TweenCore;
 	import com.greensock.easing.Linear;
 	
 	import flash.display.Sprite;
+	import flash.events.EventDispatcher;
 	import flash.geom.Point;
 	
 	import game.GameController;
+	import game.events.TankEvent;
 	import game.mapObjects.MapObjectsController;
 	import game.mapObjects.Stone;
 	import game.matrix.MapMatrix;
@@ -39,10 +38,11 @@ package game.tank {
 		
 		private var _moving:Boolean; //true - tank moving now, false - else
 		
-		public static const LEFT_ROT:int = 270;
+		public static const LEFT_ROT:int = -90;
 		public static const RIGHT_ROT:int = 90;
 		public static const UP_ROT:int = 0;
-		public static const DOWN_ROT:int = 180;
+		public static const DOWN_ROT_PLUS:int = 180;
+		public static const DOWN_ROT_MINUS:int =-180;
 		
 		public static const MOVE_LENGHT:int = GameController.CELL;
 		
