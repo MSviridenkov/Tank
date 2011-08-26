@@ -1,4 +1,5 @@
 package game {
+	import game.events.MineBamEvent;
 	import game.mapObjects.MapObjectsController;
 	import game.events.DrawingControllerEvent;
 	import game.drawing.MouseDrawController;
@@ -43,6 +44,23 @@ package game {
 		private function listenControllers():void {
 			_mouseDrawController.addEventListener(DrawingControllerEvent.WANT_START_DRAW, onWantStartDraw);
 			_mouseDrawController.addEventListener(DrawingControllerEvent.NEW_MOVE_POINT, onNewMovePoint);
+			_mapObjectsController.addEventListener(MineBamEvent.BAM, onMineBam);
+		}
+		
+		private function killTank():void {
+			_mouseDrawController.removeEventListener(DrawingControllerEvent.WANT_START_DRAW, onWantStartDraw);
+			_mouseDrawController.removeEventListener(DrawingControllerEvent.NEW_MOVE_POINT, onNewMovePoint);
+			_mapObjectsController.removeEventListener(MineBamEvent.BAM, onMineBam);
+		}
+		
+		/* event handlers */
+		
+		private function onMineBam(event:MineBamEvent):void {
+			if (Math.abs(_tankController.tank.x - event.minePoint.x) < event.distantion &&
+					Math.abs(_tankController.tank.y - event.minePoint.y) < event.distantion) {
+				_tankController.bam();
+				killTank();
+			}
 		}
 		
 		private function onNewMovePoint(event:DrawingControllerEvent):void {

@@ -1,13 +1,21 @@
 package game.mapObjects {
+	import flash.display.Shape;
+	import flash.events.Event;
+	import com.greensock.easing.EaseLookup;
+	import com.greensock.easing.Linear;
+	import com.greensock.data.TweenLiteVars;
+	import com.greensock.TweenMax;
 	import game.GameController;
 	import flash.geom.Point;
 	import flash.display.Sprite;
 
 	public class Mine extends Sprite{
-		private var _distantion:int;
+		private var _distance:int;
+		private var _activated:Boolean;
 		
 		public function Mine(pint:Point):void {
-			_distantion = 3;
+			_distance = 3;
+			_activated = false;
 			this.x = pint.x;
 			this.y = pint.y;
 			super();
@@ -24,12 +32,34 @@ package game.mapObjects {
 		
 		/* API */
 		
-		public function get distance():int { return _distantion; }
+		public function get distance():int { return _distance; }
 		
 		public function activate():void {
+			if (_activated) { return; }
+			_activated = true;
 			this.graphics.beginFill(0xaa0f00);
 			this.graphics.drawCircle(0, 0, 2);
 			this.graphics.endFill();
+			new TweenMax(
+					this, .5, {alpha : 0, repeat : 5, yoyo: true, onComplete : 
+					function():void { bam(); }});
+		}
+		
+		/* Internal functions */
+		private function bam():void {
+			dispatchEvent(new Event(Event.CONNECT));
+			trace("BAM");
+			showBam();
+		}
+		
+		private function showBam():void {
+			const shape:Shape = new Shape();
+			shape.graphics.beginFill(0x0fb0af);
+			const maxSize:int = (_distance+1) * GameController.CELL;
+			shape.graphics.drawCircle(0, 0, 1);
+			shape.graphics.endFill();
+			addChild(shape);
+			TweenMax.to(shape, .6, {scaleX : maxSize, scaleY : maxSize, alpha : 0});
 		}
 	}
 }

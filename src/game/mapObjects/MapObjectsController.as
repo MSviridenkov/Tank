@@ -1,4 +1,7 @@
 package game.mapObjects {
+	import flash.events.EventDispatcher;
+	import game.events.MineBamEvent;
+	import flash.events.Event;
 	import game.tank.Tank;
 	import flash.geom.Point;
 	import flash.display.Sprite;
@@ -6,7 +9,7 @@ package game.mapObjects {
 	import game.matrix.MapMatrix;
 	import game.matrix.MatrixItemIds;
 
-	public class MapObjectsController {
+	public class MapObjectsController extends EventDispatcher{
 		private var _mapMatrix:MapMatrix;
 		private var _container:Sprite;
 		private var _stones:Vector.<Stone>;
@@ -53,9 +56,17 @@ package game.mapObjects {
 			var mine:Mine;
 			for (var i:int = 0; i < minesCount; ++i) {
 				mine = new Mine(_mapMatrix.getRandomPoint());
+				mine.addEventListener(Event.CONNECT, onMineActivate);
 				_mines.push(mine);
 				_container.addChild(mine);
 			}
+		}
+		
+		private function onMineActivate(event:Event):void {
+			const mine:Mine = event.target as Mine;
+			mine.removeEventListener(Event.CONNECT, onMineActivate);
+			//_container.removeChild(mine);
+			dispatchEvent(new MineBamEvent(MineBamEvent.BAM, mine.distance, new Point(mine.x, mine.y)));
 		}
 		
 		private function addStone(mPoint:Point):void {

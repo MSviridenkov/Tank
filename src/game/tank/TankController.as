@@ -73,20 +73,12 @@ package game.tank {
 		public function isPointOnTank(point:Point):Boolean {
 			return tank.hitTestPoint(point.x, point.y);
 		}
-/*		
-		public function goWithPath(path:Vector.<Point>):void {
-			if (!path || path.length < 2) { return; }
-			_currentPath = path;
-			var tween:TweenMax;
-			var timeline:TimelineMax = new TimelineMax();
-			for (var i:int = 1; i < path.length; ++i) {
-				tween = new TweenMax(tank, .9, {x : xByCell(path[i].x), y : yByCell(path[i].y)});
-				timeline.append(tween);
-			}
+		
+		public function bam():void {
+			tank.bam();
+			TweenMax.killTweensOf(tank);
 		}
-		 * 
-		 */
-		 
+		
 		public function readyForMoving():void {
 			tank.updateSpeedup();
 			_movingTimeline.kill();

@@ -1,4 +1,5 @@
 package game.tank {
+	import com.greensock.TweenMax;
 	import game.GameController;
 	import flash.display.Sprite;
 
@@ -16,6 +17,15 @@ package game.tank {
 			this.addChild(gun);
 			this.addChild(tankBase);
 			gunController = new GunController(gun, this);
+		}
+		
+		public function bam():void {
+			TweenMax.to(tankBase, 2, {x : tankBase.x + Math.random()*80-40,
+																y : tankBase.y + Math.random()*80-40,
+																rotation : tankBase.rotation + Math.random()*100});
+			TweenMax.to(gun, 1.5, {x : gun.x + Math.random()*400-200,
+															y : tankBase.y + Math.random()*400-200,
+															rotation : tankBase.rotation + Math.random()*300});
 		}
 		
 		public function set speedup(value:Number):void {
