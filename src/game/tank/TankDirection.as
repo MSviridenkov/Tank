@@ -72,19 +72,19 @@ package game.tank {
 			const res:Point = point;
 			switch(_value) {
 				case DOWN_DIR : {
-					res.y += TankController.MOVE_LENGHT;
+					res.y += GameController.CELL;
 					break;
 				}
 				case LEFT_DIR : {
-					res.x -= TankController.MOVE_LENGHT;
+					res.x -= GameController.CELL;
 					break;
 				}
 				case UP_DIR : {
-					res.y -= TankController.MOVE_LENGHT;
+					res.y -= GameController.CELL;
 					break;
 				}
 				case RIGHT_DIR : {
-					res.x += TankController.MOVE_LENGHT;
+					res.x += GameController.CELL;
 				}
 			}
 			return res;

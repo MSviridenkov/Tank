@@ -34,8 +34,8 @@ package game {
 			_mapMatrix.drawMatrix();
 			_mouseDrawController = new MouseDrawController(_container, _mapMatrix);
 			_bulletsController = new BulletsController(_container);
-			_tankController = new TankController(_container, _bulletsController, _mapMatrix);
-			_targetsController = new TargetsController(_container, _bulletsController, _tankController);
+			_tankController = new TankController(_container, _mapMatrix);
+			_targetsController = new TargetsController(_container, _bulletsController);
 			_mapObjectsController = new MapObjectsController(_mapMatrix, _container);
 			_mapObjectsController.drawObjects();
 			_tankMovementListener = new TankMovementListener(_tankController, _mapObjectsController);
