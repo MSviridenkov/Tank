@@ -5,6 +5,7 @@ package game.tank {
 
 	public class GunController {
 		public var gunRot:int;
+		public var abc:Boolean;
 	
 		private var _t:Tank;
 		private var _gun:GunView;
@@ -27,8 +28,7 @@ package game.tank {
 			/*if (_point.y >= _tank.y && _point.x <= _tank.x) {
 				gunRot = (180 - angle1)
 			}*/
-			TweenMax.to(_gun, .4, {rotation : gunRot});
-			trace (angle, 180-angle);
+			TweenMax.to(_gun, 1.3, {rotation : gunRot});
 		}
 	}
 }

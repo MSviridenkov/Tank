@@ -34,7 +34,6 @@ package game.tank {
 			_target.y = rndY * GameController.CELL + GameController.CELL/2;
 			_targets.push(_target);
 			_container.addChild(_target);
-			trace (_target.x, _target.y);
 			for each (var target:Target in _targets) { _tankController.addTargetPoint(new Point (target.x, target.y)) }
 			//_matrix[rndX][rndY] = MatrixItemIds.TARGET;
 		}

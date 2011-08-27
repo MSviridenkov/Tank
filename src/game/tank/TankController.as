@@ -154,7 +154,6 @@ package game.tank {
 			for each (var targetPoint:Point in _targetsPoints) {
 				if (point.x == targetPoint.x && point.y == targetPoint.y) {return false;}
 			}
-			trace ("point:", point.x, point.y, "tank",tank.x, tank.y, "target", targetPoint.x, targetPoint.y )
 			return true;
 		}
 	}
