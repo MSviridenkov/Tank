@@ -27,15 +27,13 @@ package game {
 			listenControllers();
 		}
 		
-		public function get tankController():TankController { return _tankController; }
-		
 		private function initControllers():void {
 			_mapMatrix = new MapMatrix(_container);
 			_mapMatrix.drawMatrix();
 			_mouseDrawController = new MouseDrawController(_container, _mapMatrix);
 			_bulletsController = new BulletsController(_container);
 			_tankController = new TankController(_container, _mapMatrix);
-			_targetsController = new TargetsController(_container, _bulletsController);
+			_targetsController = new TargetsController(_container);
 			_mapObjectsController = new MapObjectsController(_mapMatrix, _container);
 			_mapObjectsController.drawObjects();
 			_tankMovementListener = new TankMovementListener(_tankController, _mapObjectsController);
