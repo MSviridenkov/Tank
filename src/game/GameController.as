@@ -18,6 +18,7 @@ package game {
 		private var _mapMatrix:MapMatrix;
 		private var _mapObjectsController:MapObjectsController;
 		private var _mouseDrawController:MouseDrawController;
+		private var _timeController:TimeController;
 		
 		public static const CELL:int = 40;
 		
@@ -37,6 +38,7 @@ package game {
 			_mapObjectsController = new MapObjectsController(_mapMatrix, _container);
 			_mapObjectsController.drawObjects();
 			_tankMovementListener = new TankMovementListener(_tankController, _mapObjectsController);
+			_timeController = new TimeController(_container, _tankController);
 		}
 		
 		private function listenControllers():void {

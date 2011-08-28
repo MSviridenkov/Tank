@@ -43,6 +43,8 @@ package game.tank {
 			container.addChild(tank);
 		}
 		
+		public function get tankTimeline():TimelineMax { return _movingTimeline; }
+		
 		public function isPointOnTank(point:Point):Boolean {
 			return tank.hitTestPoint(point.x, point.y);
 		}
