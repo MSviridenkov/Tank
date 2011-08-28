@@ -1,35 +1,40 @@
 package game {
-	import com.bit101.components.PushButton;
-	import flash.events.MouseEvent;
-	import flash.display.SimpleButton;
 	import flash.display.Sprite;
-	import game.tank.TankController;
+
 	public class TimeController {
-		private var _tankController:TankController;
 		private var _container:Sprite;
 		
-		/* minimal components */
-		private var _buttonTimeScale:PushButton;
+		private var _controllers:Vector.<IControllerWithTime>;
 		
-		public function TimeController(container:Sprite, tankController:TankController):void {
+		public function TimeController(container:Sprite):void {
 			super();
-			_tankController = tankController;
 			_container = container;
-			addButton();
+		}
+		
+		/* API */
+		
+		public function add_controller(controllerWithTime:IControllerWithTime):void {
+			if (!controllerWithTime) { return; }
+			if (!_controllers) { _controllers = new Vector.<IControllerWithTime>(); }
+			_controllers.push(controllerWithTime);
+		}
+		
+		/** slow down time */
+		public function slowDown():void {
+			scaleTime(.14);
+		}
+		
+		/** normalize time */
+		public function normalize():void {
+			scaleTime(1);
 		}
 		
 		/* Internal functions */
 		
-		private function addButton():void {
-			_buttonTimeScale = new PushButton(_container, 100, 20, "timeScale", onButtonClick);
-		}
-		
-		private function onButtonClick(event:MouseEvent):void {
-			if (_tankController.tankTimeline.timeScale > 1) {
-				trace("timescale < 1");
-				_tankController.tankTimeline.timeScale = 1;
-			} else {
-				_tankController.tankTimeline.timeScale = 2.3;
+		private function scaleTime(value:Number):void {
+			if (!_controllers) { return; }
+			for each (var controller:IControllerWithTime in _controllers) {
+				controller.scaleTime(value);
 			}
 		}
 	}

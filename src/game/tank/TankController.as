@@ -1,4 +1,5 @@
 package game.tank {
+	import game.IControllerWithTime;
 	import com.greensock.TimelineMax;
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Linear;
@@ -7,12 +8,14 @@ package game.tank {
 	import flash.events.EventDispatcher;
 	import flash.geom.Point;
 	
-	import game.GameController;
 	import game.events.TankEvent;
 	import game.matrix.MapMatrix;
 
-	public class TankController extends EventDispatcher {
+	public class TankController extends EventDispatcher
+															implements IControllerWithTime{
 		public var tank:Tank;
+		
+		private var _scaleTime:Number;
 		
 		private var _direction:TankDirection;
 		private var _container:Sprite;
@@ -33,6 +36,7 @@ package game.tank {
 		
 		public function TankController(container:Sprite, mapMatrix:MapMatrix):void {
 			_moving = false;
+			_scaleTime = 1;
 			tank = new Tank();
 			_movingTimeline = new TimelineMax();
 			_direction = new TankDirection(TankDirection.UP_DIR);
@@ -44,6 +48,13 @@ package game.tank {
 		}
 		
 		public function get tankTimeline():TimelineMax { return _movingTimeline; }
+		
+		public function scaleTime(value:Number):void {
+			_scaleTime = value;
+			if (_movingTimeline) {
+				_movingTimeline.timeScale = value;
+			}
+		}
 		
 		public function isPointOnTank(point:Point):Boolean {
 			return tank.hitTestPoint(point.x, point.y);
@@ -58,6 +69,7 @@ package game.tank {
 			tank.updateSpeedup();
 			_movingTimeline.kill();
 			_movingTimeline = new TimelineMax();
+			_movingTimeline.timeScale = _scaleTime;
 		}
 		
 		public function addPointToMovePath(point:Point):void {
@@ -76,14 +88,6 @@ package game.tank {
 			_direction.rotateIfNeed(tank, point);
 			dispatchEvent(new TankEvent(TankEvent.COME_TO_CELL));
 		}
-		public function go(direction:uint):void {
-			if (_moving) { return; }
-			_direction.value = direction;
-			if (!canMove()) { return; }
-			const nextPoint:Point = _direction.tickPoint(new Point(tank.x, tank.y));
-			tank.tankBase.rotation = _direction.rotation;
-			tweenToPointTank(new Point(nextPoint.x, nextPoint.y));
-		}
 		
 		public function shot(point:Point):void {
 			tank.gunController.gunRotation( _mapMatrix.getMatrixPoint((new Point(point.x, point.y))));
@@ -91,22 +95,6 @@ package game.tank {
 			//															point, tank.gunController.gunRot);
 			//_bulletsController.bulletRotate(tank.gunController.gunRot);
 		}
-
-		private function tweenToPointTank(point:Point):void {
-			if (!_moving) {
-				_moving = true;
-				TweenMax.to(tank, .3, {x : point.x, y:point.y,
-															 ease: Linear.easeNone,
-															 onComplete : function ():void { _moving = false; }});
-			}
-		}
 		
-		private function canMove():Boolean {
-			const point:Point = _direction.tickPoint(new Point(tank.x, tank.y));
-			
-			if (point.x / GameController.CELL < 0 || point.x / GameController.CELL > MapMatrix.MATRIX_WIDTH) { return false; }
-			if (point.y / GameController.CELL < 0 || point.y / GameController.CELL > MapMatrix.MATRIX_HEIGHT) { return false; }
-			return true;
-		}
-	}
+}
 }

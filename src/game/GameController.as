@@ -38,7 +38,7 @@ package game {
 			_mapObjectsController = new MapObjectsController(_mapMatrix, _container);
 			_mapObjectsController.drawObjects();
 			_tankMovementListener = new TankMovementListener(_tankController, _mapObjectsController);
-			_timeController = new TimeController(_container, _tankController);
+			_timeController = new TimeController(_container);
 		}
 		
 		private function listenControllers():void {
