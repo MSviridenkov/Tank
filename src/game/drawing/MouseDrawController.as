@@ -2,9 +2,7 @@ package game.drawing {
 	import flash.display.Shape;
 	import game.events.DrawingControllerEvent;
 	import flash.events.EventDispatcher;
-	import flash.events.TimerEvent;
 	import com.greensock.TweenMax;
-	import flash.utils.Timer;
 	import game.GameController;
 	import game.matrix.MapMatrix;
 	import flash.geom.Point;
@@ -28,8 +26,6 @@ package game.drawing {
 		
 		private var _drawing:Boolean;
 		
-		private var _timer:Timer;
-		
 		public function MouseDrawController(container:Sprite, mapMatrix:MapMatrix) {
 			_mapMatrix = mapMatrix;
 			_drawing = false;
@@ -40,7 +36,6 @@ package game.drawing {
 			_container.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 			_container.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 			_container.addChild(_drawingContainer);
-			initTimer();
 		}
 		
 		public function get tankPath():Vector.<Point> {
@@ -59,12 +54,24 @@ package game.drawing {
 		public function startDrawTankPath():void {
 			removePreviousPath();
 			_path = new Vector.<Point>();
-			//createNewPathPart();
+			createNewPathPart();
 			_path.push(_mapMatrix.getMatrixPoint(new Point(_currentMousePoint.x, 
 																											_currentMousePoint.y)));
 			//_drawingContainer.graphics.moveTo(_currentMousePoint.x, _currentMousePoint.y);
 			_drawing = true;
 		}
+		
+		public function removePart():void {
+			if (!_pathParts || _pathParts.length == 0) {
+				trace("[MouseDrawingController.removePart] why no parts??");
+				return;
+			}
+			const part:Shape = _pathParts[0];
+			removePartFromContainer(part);
+			_pathParts.shift();
+		}
+		
+		/* Internal functions */
 		
 		private function createNewPathPart():void {
 			if (!_pathParts) { _pathParts = new Vector.<Shape>(); }
@@ -85,12 +92,6 @@ package game.drawing {
 			_currentPathPart.graphics.endFill();
 		}
 		
-		private function initTimer():void {
-			_timer = new Timer(900);
-			_timer.addEventListener(TimerEvent.TIMER, onTimer);
-			_timer.stop();
-		}
-		
 		private function drawRectangle():void {
 			_container.graphics.beginFill(0xffffff, .0);
 			_container.graphics.drawRect(0, 0, 
@@ -108,7 +109,6 @@ package game.drawing {
 					addPointToPath(point);
 					createNewPathPart();
 					dispatchEvent(new DrawingControllerEvent(DrawingControllerEvent.NEW_MOVE_POINT));
-					if (!_timer.running) { _timer.start(); }
 				}
 			}
 		}
@@ -133,7 +133,6 @@ package game.drawing {
 		private function removePreviousPath():void {
 			if (_path) {
 				if (_pathParts && _pathParts.length > 0) {
-					_timer.stop();
 					for each (var part:Shape in _pathParts) {
 						_drawingContainer.removeChild(part);
 					}
@@ -142,7 +141,6 @@ package game.drawing {
 				_path = null;
 			}
 			if (_drawingContainer.mask) { _drawingContainer.mask = null; }
-			_timer.stop();
 		}
 		
 		private function onMouseDown(event:MouseEvent):void {
@@ -153,7 +151,7 @@ package game.drawing {
 		private function onMouseUp(event:MouseEvent):void {
 			if (_path) {
 				_drawing = false;
-				startTimer();
+				dispatchEvent(new DrawingControllerEvent(DrawingControllerEvent.DRAWING_COMPLETE));
 			}
 		}
 		
@@ -173,19 +171,6 @@ package game.drawing {
 		 * 
 		 */
 
-		private function startTimer():void {
-			_timer.start();
-		}
-		private function onTimer(event:TimerEvent):void {
-			if (!_pathParts || _pathParts.length == 0) {
-				if (!_drawing) { _timer.stop(); } //если уже не рисуем, то останавливаем таймер
-				return;
-			}
-			const part:Shape = _pathParts[0];
-			removePartFromContainer(part);
-			_pathParts.shift();
-		}
-		
 		private function removePartFromContainer(part:Shape):void {
 			TweenMax.to(part, .4, {alpha : 0, 
 									onComplete : function():void { _drawingContainer.removeChild(part); }});

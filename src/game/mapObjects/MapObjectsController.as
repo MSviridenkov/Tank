@@ -1,4 +1,5 @@
 package game.mapObjects {
+	import game.IControllerWithTime;
 	import flash.events.EventDispatcher;
 	import game.events.MineBamEvent;
 	import flash.events.Event;
@@ -9,20 +10,33 @@ package game.mapObjects {
 	import game.matrix.MapMatrix;
 	import game.matrix.MatrixItemIds;
 
-	public class MapObjectsController extends EventDispatcher{
+	public class MapObjectsController extends EventDispatcher
+																		implements IControllerWithTime{
 		private var _mapMatrix:MapMatrix;
 		private var _container:Sprite;
 		private var _stones:Vector.<Stone>;
 		private var _mines:Vector.<Mine>;
 		
+		private var _scaleTime:Number;
+		
 		public function MapObjectsController(matrix:MapMatrix, container:Sprite):void {
 			super();
+			_scaleTime = 1;
 			_mapMatrix = matrix;
 			_container = container;
 			addMines();
 		}
 		
 		/*API*/
+		
+		public function scaleTime(value:Number):void {
+			_scaleTime = value;
+			if (_mines) {
+				for each (var mine:Mine in _mines) {
+					mine.scaleTime(value);
+				}
+			}
+		}
 		
 		public function checkReactionForTank(tank:Tank):void {
 			trace("check reaction");
@@ -31,7 +45,7 @@ package game.mapObjects {
 			for each (var mine:Mine in _mines) {
 				if (Math.abs(tank.x - mine.x) < mine.distance &&
 						Math.abs(tank.y - mine.y) < mine.distance) {
-					mine.activate();
+					mine.activate(_scaleTime);
 				}
 			}
 		}

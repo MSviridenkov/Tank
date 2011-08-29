@@ -53,6 +53,7 @@ package game.tank {
 			_scaleTime = value;
 			if (_movingTimeline) {
 				_movingTimeline.timeScale = value;
+				trace("timeScale with existing movingTimeline");
 			}
 		}
 		

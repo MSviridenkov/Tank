@@ -37,19 +37,28 @@ package game {
 			_targetsController = new TargetsController(_container);
 			_mapObjectsController = new MapObjectsController(_mapMatrix, _container);
 			_mapObjectsController.drawObjects();
-			_tankMovementListener = new TankMovementListener(_tankController, _mapObjectsController);
+			_tankMovementListener = new TankMovementListener(_tankController, _mapObjectsController,
+																												_mouseDrawController);
 			_timeController = new TimeController(_container);
+			initTimeController();
+		}
+		
+		private function initTimeController():void {
+			_timeController.add_controller(_tankController);
+			_timeController.add_controller(_mapObjectsController);
 		}
 		
 		private function listenControllers():void {
 			_mouseDrawController.addEventListener(DrawingControllerEvent.WANT_START_DRAW, onWantStartDraw);
 			_mouseDrawController.addEventListener(DrawingControllerEvent.NEW_MOVE_POINT, onNewMovePoint);
+			_mouseDrawController.addEventListener(DrawingControllerEvent.DRAWING_COMPLETE, onDrawingComplete);
 			_mapObjectsController.addEventListener(MineBamEvent.BAM, onMineBam);
 		}
 		
 		private function killTank():void {
 			_mouseDrawController.removeEventListener(DrawingControllerEvent.WANT_START_DRAW, onWantStartDraw);
 			_mouseDrawController.removeEventListener(DrawingControllerEvent.NEW_MOVE_POINT, onNewMovePoint);
+			_mouseDrawController.removeEventListener(DrawingControllerEvent.DRAWING_COMPLETE, onDrawingComplete);
 			_mapObjectsController.removeEventListener(MineBamEvent.BAM, onMineBam);
 		}
 		
@@ -67,10 +76,15 @@ package game {
 			_tankController.addPointToMovePath(_mouseDrawController.getLastMovePoint());
 		}
 		
+		private function onDrawingComplete(event:DrawingControllerEvent):void {
+			_timeController.normalize();
+		}
+		
 		private function onWantStartDraw(event:DrawingControllerEvent):void {
 			if (_tankController.isPointOnTank(_mouseDrawController.currentMousePoint)) {
 				_tankController.readyForMoving();
 				_mouseDrawController.startDrawTankPath();
+				_timeController.slowDown();
 			}
 		}
 	}

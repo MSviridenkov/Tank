@@ -1,4 +1,5 @@
 package game.mapObjects {
+	import com.greensock.TweenLite;
 	import flash.display.Shape;
 	import flash.events.Event;
 	import com.greensock.easing.EaseLookup;
@@ -12,6 +13,8 @@ package game.mapObjects {
 	public class Mine extends Sprite{
 		private var _distance:int;
 		private var _activated:Boolean;
+		
+		private var _tween:TweenMax;
 		
 		public function Mine(pint:Point):void {
 			_distance = 3;
@@ -34,15 +37,19 @@ package game.mapObjects {
 		
 		public function get distance():int { return _distance; }
 		
-		public function activate():void {
+		public function activate(_scaleTime:Number):void {
 			if (_activated) { return; }
 			_activated = true;
 			this.graphics.beginFill(0xaa0f00);
 			this.graphics.drawCircle(0, 0, 2);
 			this.graphics.endFill();
-			new TweenMax(
+			_tween = new TweenMax(
 					this, .5, {alpha : 0, repeat : 5, yoyo: true, onComplete : 
-					function():void { bam(); }});
+					function():void { bam(); }, timeScale : _scaleTime});
+		}
+		
+		public function scaleTime(value:Number):void {
+			if (_tween) { _tween.timeScale = value; }
 		}
 		
 		/* Internal functions */
