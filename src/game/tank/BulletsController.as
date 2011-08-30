@@ -35,22 +35,24 @@ package game.tank {
 				dlinaX = Math.sin(angle/180*Math.PI*(-1) + 180) * 25;
 				dlinaY = Math.cos(angle/180*Math.PI*(-1) + 180) * 25;
 			}
-			bullet = new Bullet (_p.x + dlinaX, _p.y - dlinaY);
-			_bullets.push(bullet);
-			_container.addChild(bullet);
-			startMove(targetPoint);
+			//bullet = new Bullet (_p.x + dlinaX, _p.y - dlinaY);
+			//_bullets.push(bullet);
+			//_container.addChild(bullet);
+			//startMove(targetPoint);
 		}
 		
 		public function bulletRotate(rotation:int):void {
 			bullet.rotation = rotation;
 		}
-		
+/*		
 		private function startBulletTween(bullet:Bullet, targetPoint:Point):void {
 			TweenMax.to(bullet, 1.3, {x : targetPoint.x, y : targetPoint.y,
 																onUpdate : onBulletTweenUpdate,
 																onUpdateParams : [bullet],
 																onComplete : getCompleteBulletFunction(bullet)} );
 		}
+		 * 
+		 */
 		
 		private function getCompleteBulletFunction(bullet:Bullet):Function {
 			return function ():void {
@@ -75,7 +77,7 @@ package game.tank {
 		private function removeBulletAndTarget(bullet:Bullet, target:Target):void {
 			_container.removeChild(bullet);
 			killTweenMax(bullet);
-			removeFromVector(bullet)
+			removeFromVector(bullet);
 			_container.removeChild(target);
 			var indextarget:int = _targets.indexOf(target);
 			_targets.splice(indextarget, 1);
@@ -88,9 +90,11 @@ package game.tank {
 				tween.kill();
 			}
 		}
-		
+/*		
 		private function startMove(targetPoint:Point):void {
 			startBulletTween(bullet, targetPoint);
 		}
+	 * 
+	 */
 	}
 }

@@ -30,5 +30,20 @@ package game.tank {
 			}*/
 			TweenMax.to(_gun, 1.3, {rotation : gunRot});
 		}
+		
+		public function getBulletPoint(point:Point):Point {
+			var angle:int = gunRot;
+			var dlinaX:int;
+			var dlinaY:int;
+			if (-90<angle<90){
+				dlinaX = Math.sin(angle/180*Math.PI) * 25;
+				dlinaY = Math.cos(angle/180*Math.PI) * 25;
+			}
+			else{
+				dlinaX = Math.sin(angle/180*Math.PI*(-1) + 180) * 25;
+				dlinaY = Math.cos(angle/180*Math.PI*(-1) + 180) * 25;
+			}
+			return new Point(point.x + dlinaX, point.y - dlinaY);
+		}
 	}
 }

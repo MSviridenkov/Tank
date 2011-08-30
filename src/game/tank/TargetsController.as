@@ -1,39 +1,41 @@
 package game.tank {
+	import game.events.TargetsControllerEvent;
+	import flash.events.EventDispatcher;
 	import flash.display.Sprite;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
-	import game.GameController;
 	import game.matrix.MapMatrix;
 
-	public class TargetsController {
+	public class TargetsController extends EventDispatcher{
 		private var _timer:Timer;
-		private var _targets:Vector.<Target>;
+		private var _enemyes:Vector.<Tank>;
 		private var _container:Sprite;
 		
 		public function TargetsController(container:Sprite) {
 			_container = container;
-			_targets = new Vector.<Target>;
+			_enemyes = new Vector.<Tank>;
 			for (var i:int = 0; i < Math.random() * 5; i++) { createTarget(); }
 			initTimer();
 			startTimer();
 		}
 		
-		private function createTarget():void {
-			var _target:Target = new Target();
+		private function createTarget():Tank {
+			var enemyTank:Tank = new Tank();
 			var rndX:int = Math.random() * MapMatrix.MATRIX_WIDTH;
 			var rndY:int = Math.random() * MapMatrix.MATRIX_HEIGHT;
-			_target.x = rndX * GameController.CELL + GameController.CELL/2;
-			_target.y = rndY * GameController.CELL + GameController.CELL/2;
-			_targets.push(_target);
-			_container.addChild(_target);
+			enemyTank.x = rndX;
+			enemyTank.y = rndY;
+			_enemyes.push(enemyTank);
+			_container.addChild(enemyTank);
+			return enemyTank;
 		}
 		
 		private function createTargetforTimer (event:TimerEvent):void {
-			if (_targets.length <5 && Math.random() < .5) {
-			createTarget();
+			if (_enemyes.length <5 && Math.random() < .5) {
+				const enemyTank:Tank = createTarget();
+				dispatchEvent(new TargetsControllerEvent(TargetsControllerEvent.NEW_TANK, enemyTank));
 			}
-			else {}
 		}
 		
 		private function initTimer():void {

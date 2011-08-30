@@ -1,10 +1,6 @@
 package game.mapObjects {
-	import com.greensock.TweenLite;
 	import flash.display.Shape;
 	import flash.events.Event;
-	import com.greensock.easing.EaseLookup;
-	import com.greensock.easing.Linear;
-	import com.greensock.data.TweenLiteVars;
 	import com.greensock.TweenMax;
 	import game.GameController;
 	import flash.geom.Point;

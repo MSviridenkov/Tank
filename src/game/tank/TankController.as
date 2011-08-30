@@ -1,4 +1,5 @@
 package game.tank {
+	import game.events.TankShotingEvent;
 	import game.IControllerWithTime;
 	import com.greensock.TimelineMax;
 	import com.greensock.TweenMax;
@@ -53,7 +54,6 @@ package game.tank {
 			_scaleTime = value;
 			if (_movingTimeline) {
 				_movingTimeline.timeScale = value;
-				trace("timeScale with existing movingTimeline");
 			}
 		}
 		
@@ -80,8 +80,7 @@ package game.tank {
 						{x : point.x, y : point.y, 
 						ease : Linear.easeNone,
 						onStart : onStartMoveToPathNode,
-						onStartParams : [point],
-						onComplete : function():void { trace("complete"); }}));
+						onStartParams : [point]}));
 			_movingTimeline.play();
 		}
 		
@@ -92,9 +91,12 @@ package game.tank {
 		
 		public function shot(point:Point):void {
 			tank.gunController.gunRotation( _mapMatrix.getMatrixPoint((new Point(point.x, point.y))));
-			//_bulletsController.pushBullet(_mapMatrix.getStagePoint(new Point(tank.x, tank.y)),
-			//															point, tank.gunController.gunRot);
-			//_bulletsController.bulletRotate(tank.gunController.gunRot);
+			const stagePoint:Point =_mapMatrix.getStagePoint(new Point(tank.x, tank.y));
+			const bullet:Bullet = new Bullet(tank.gunController.getBulletPoint(stagePoint),
+																				tank.gunController.gunRot);
+			bullet.moveTo(point);
+			_container.addChild(bullet);
+			dispatchEvent(new TankShotingEvent(TankShotingEvent.WAS_SHOT, bullet));
 		}
 		
 }

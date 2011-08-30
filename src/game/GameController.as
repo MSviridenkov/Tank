@@ -1,4 +1,8 @@
 package game {
+	import game.events.TargetsControllerEvent;
+	import game.events.TankShotingEvent;
+	import flash.geom.Point;
+	import flash.events.MouseEvent;
 	import game.events.MineBamEvent;
 	import game.mapObjects.MapObjectsController;
 	import game.events.DrawingControllerEvent;
@@ -26,6 +30,7 @@ package game {
 			_container = c;
 			initControllers();
 			listenControllers();
+			listenStageEvents();
 		}
 		
 		private function initControllers():void {
@@ -53,6 +58,12 @@ package game {
 			_mouseDrawController.addEventListener(DrawingControllerEvent.NEW_MOVE_POINT, onNewMovePoint);
 			_mouseDrawController.addEventListener(DrawingControllerEvent.DRAWING_COMPLETE, onDrawingComplete);
 			_mapObjectsController.addEventListener(MineBamEvent.BAM, onMineBam);
+			_tankController.addEventListener(TankShotingEvent.WAS_SHOT, onTankShot);
+			_targetsController.addEventListener(TargetsControllerEvent.NEW_TANK, onNewEnemyTank);
+		}
+		
+		private function listenStageEvents():void {
+			_container.addEventListener(MouseEvent.CLICK, onStageClick);
 		}
 		
 		private function killTank():void {
@@ -60,9 +71,17 @@ package game {
 			_mouseDrawController.removeEventListener(DrawingControllerEvent.NEW_MOVE_POINT, onNewMovePoint);
 			_mouseDrawController.removeEventListener(DrawingControllerEvent.DRAWING_COMPLETE, onDrawingComplete);
 			_mapObjectsController.removeEventListener(MineBamEvent.BAM, onMineBam);
+			_tankController.removeEventListener(TankShotingEvent.WAS_SHOT, onTankShot);
 		}
 		
 		/* event handlers */
+		
+		private function onStageClick(event:MouseEvent):void {
+			const point:Point = new Point(event.stageX, event.stageY);
+			if (!_tankController.isPointOnTank(point)) {
+				_tankController.shot(point);
+			}
+		}
 		
 		private function onMineBam(event:MineBamEvent):void {
 			if (Math.abs(_tankController.tank.x - event.minePoint.x) < event.distantion &&
@@ -70,6 +89,10 @@ package game {
 				_tankController.bam();
 				killTank();
 			}
+		}
+		
+		private function onTankShot(event:TankShotingEvent):void {
+			_mapObjectsController.addBullet(event.bullet);
 		}
 		
 		private function onNewMovePoint(event:DrawingControllerEvent):void {
@@ -86,6 +109,10 @@ package game {
 				_mouseDrawController.startDrawTankPath();
 				_timeController.slowDown();
 			}
+		}
+		
+		private function onNewEnemyTank(event:TargetsControllerEvent):void {
+			_mapObjectsController.addEnemyTank(event.tank);
 		}
 	}
 }
