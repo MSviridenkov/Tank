@@ -20,7 +20,13 @@ package game.tank {
 			startTimer();
 		}
 		
-		private function createTarget():Tank {
+		public function get enemyTanks():Vector.<Tank> {
+			return _enemyes;
+		}
+		
+		/* Internal functions */
+		
+		private function createTarget():void {
 			var enemyTank:Tank = new Tank();
 			var rndX:int = Math.random() * MapMatrix.MATRIX_WIDTH;
 			var rndY:int = Math.random() * MapMatrix.MATRIX_HEIGHT;
@@ -28,13 +34,12 @@ package game.tank {
 			enemyTank.y = rndY;
 			_enemyes.push(enemyTank);
 			_container.addChild(enemyTank);
-			return enemyTank;
+			dispatchEvent(new TargetsControllerEvent(TargetsControllerEvent.NEW_TANK, enemyTank));
 		}
 		
 		private function createTargetforTimer (event:TimerEvent):void {
 			if (_enemyes.length <5 && Math.random() < .5) {
-				const enemyTank:Tank = createTarget();
-				dispatchEvent(new TargetsControllerEvent(TargetsControllerEvent.NEW_TANK, enemyTank));
+				createTarget();
 			}
 		}
 		

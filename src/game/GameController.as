@@ -1,4 +1,5 @@
 package game {
+	import game.tank.Tank;
 	import game.events.TargetsControllerEvent;
 	import game.events.TankShotingEvent;
 	import flash.geom.Point;
@@ -41,7 +42,7 @@ package game {
 			_tankController = new TankController(_container, _mapMatrix);
 			_targetsController = new TargetsController(_container);
 			_mapObjectsController = new MapObjectsController(_mapMatrix, _container);
-			_mapObjectsController.drawObjects();
+			initMapObjectsController();
 			_tankMovementListener = new TankMovementListener(_tankController, _mapObjectsController,
 																												_mouseDrawController);
 			_timeController = new TimeController(_container);
@@ -51,6 +52,14 @@ package game {
 		private function initTimeController():void {
 			_timeController.add_controller(_tankController);
 			_timeController.add_controller(_mapObjectsController);
+		}
+		private function initMapObjectsController():void {
+			_mapObjectsController.drawObjects();
+			if(_targetsController && _targetsController.enemyTanks) {
+				for each (var tank:Tank in _targetsController.enemyTanks) {
+					_mapObjectsController.addEnemyTank(tank);
+				}
+			}
 		}
 		
 		private function listenControllers():void {
