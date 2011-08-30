@@ -81,6 +81,8 @@ package game {
 			_mouseDrawController.removeEventListener(DrawingControllerEvent.DRAWING_COMPLETE, onDrawingComplete);
 			_mapObjectsController.removeEventListener(MineBamEvent.BAM, onMineBam);
 			_tankController.removeEventListener(TankShotingEvent.WAS_SHOT, onTankShot);
+			_container.removeEventListener(MouseEvent.CLICK, onStageClick);
+			
 		}
 		
 		/* event handlers */
