@@ -9,10 +9,10 @@ package game.mapObjects {
 		public function Stone(rect:Rectangle) {
 			super();
 			_rect = rect;
-            //_view = new StoneView();
+            _view = new StoneView();
 			this.x = rect.x;
 			this.y = rect.y;
-			//this.addChild(_view);
+			this.addChild(_view);
 		}
 		
 		private function draw():void {

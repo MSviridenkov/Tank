@@ -1,21 +1,32 @@
 package game.tank {
 	import com.greensock.TweenMax;
-	import game.GameController;
+
+import flash.geom.ColorTransform;
+
+import game.GameController;
 	import flash.display.Sprite;
 
 	public class Tank extends Sprite {
 		public var gun:GunView;
 		public var tankBase:TankBaseView;
 		public var gunController:GunController;
+
+        private var _player:Boolean;
 		
 		private var _speedup:Number = 0;
 		private var maxSpeedup:Number = .5;
 		
-		public function Tank() {
+		public function Tank(player:Boolean = false) {
+			_player = player;
 			gun = new GunView();
 			tankBase = new TankBaseView();
 			this.addChild(gun);
 			this.addChild(tankBase);
+			if (!_player) {
+				const colorInfo:ColorTransform = new ColorTransform();
+				colorInfo.color = 0x941aff;
+				this.transform.colorTransform = colorInfo;
+			}
 			gunController = new GunController(gun, this);
 		}
 		

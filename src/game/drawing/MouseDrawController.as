@@ -31,7 +31,6 @@ package game.drawing {
 			_drawing = false;
 			_drawingContainer = new Sprite();
 			_container = container;
-			drawRectangle();
 			_container.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			_container.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 			_container.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);

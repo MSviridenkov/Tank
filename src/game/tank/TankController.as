@@ -38,7 +38,7 @@ package game.tank {
 		public function TankController(container:Sprite, mapMatrix:MapMatrix):void {
 			_moving = false;
 			_scaleTime = 1;
-			tank = new Tank();
+			tank = new Tank(true);
 			_movingTimeline = new TimelineMax();
 			_direction = new TankDirection(TankDirection.UP_DIR);
 			_container = container;
