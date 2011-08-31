@@ -7,8 +7,8 @@ package game.tank {
 		private var _tween:TweenMax;
 		
 		public function Bullet(point:Point, rotation:Number):void {
-			var view:Bullet_pic = new Bullet_pic();
-			addChild(view);
+			//var view:BulletView = new BulletView();
+			//addChild(view);
 			this.rotation = rotation;
 			this.x = point.x;
 			this.y = point.y;

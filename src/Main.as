@@ -11,7 +11,7 @@ package {
 		
 		public function Main() {
 			container = new Sprite(); 
-			this.addChild(container); 
+			this.addChild(container);
 			
 			gameController = new GameController(container);
 			

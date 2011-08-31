@@ -4,13 +4,15 @@ package game.mapObjects {
 
 	public class Stone extends Sprite {
 		private var _rect:Rectangle;
+        private var _view:StoneView;
 		
 		public function Stone(rect:Rectangle) {
 			super();
 			_rect = rect;
+            //_view = new StoneView();
 			this.x = rect.x;
 			this.y = rect.y;
-			draw();
+			//this.addChild(_view);
 		}
 		
 		private function draw():void {
