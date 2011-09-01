@@ -4,7 +4,7 @@ package game.matrix {
 	import game.GameController;
 	import flash.display.Sprite;
 	public class MapMatrix {
-		private var _matrix:Vector.<Vector.<int>>;
+		private var _matrix:Vector.<Vector.<uint>>;
 		private var _container:Sprite;
 		
 		public static const MATRIX_WIDTH:int = 15;
@@ -15,7 +15,7 @@ package game.matrix {
 			_container = container;
 		}
 		
-		public function get matrix():Vector.<Vector.<int>> {
+		public function get matrix():Vector.<Vector.<uint>> {
 			return _matrix;
 		}
 		
@@ -61,12 +61,12 @@ package game.matrix {
 		}
 		
 		private function createMatrix():void {
-			_matrix = new Vector.<Vector.<int>>();
+			_matrix = new Vector.<Vector.<uint>>();
 			for (var i:int = 0; i < MATRIX_WIDTH; ++i) {
-				_matrix.push(new Vector.<int>());
+				_matrix.push(new Vector.<uint>());
 			}
 			
-			for each (var vect:Vector.<int> in _matrix) {
+			for each (var vect:Vector.<uint> in _matrix) {
 				for (var j:int = 0; j < MATRIX_HEIGHT; ++j) {
 					Math.random() > .1 ? vect.push(MatrixItemIds.EMPTY) :
 																vect.push(MatrixItemIds.STONE);

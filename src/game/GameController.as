@@ -1,4 +1,5 @@
 package game {
+	import pathfinder.Pathfinder;
 	import game.tank.Tank;
 	import game.events.TargetsControllerEvent;
 	import game.events.TankShotingEvent;
@@ -37,10 +38,11 @@ package game {
 		private function initControllers():void {
 			_mapMatrix = new MapMatrix(_container);
 			_mapMatrix.drawMatrix();
+			Pathfinder.matrix = _mapMatrix.matrix;
 			_mouseDrawController = new MouseDrawController(_container, _mapMatrix);
 			_bulletsController = new BulletsController(_container);
 			_tankController = new TankController(_container, _mapMatrix);
-			_targetsController = new TargetsController(_container);
+			_targetsController = new TargetsController(_container, _mapMatrix, _tankController.tank);
 			_mapObjectsController = new MapObjectsController(_mapMatrix, _container);
 			initMapObjectsController();
 			_tankMovementListener = new TankMovementListener(_tankController, _mapObjectsController,
@@ -55,8 +57,9 @@ package game {
 		}
 		private function initMapObjectsController():void {
 			_mapObjectsController.drawObjects();
-			if(_targetsController && _targetsController.enemyTanks) {
-				for each (var tank:Tank in _targetsController.enemyTanks) {
+			if (_targetsController) {
+				const enemyTanks:Vector.<Tank> = _targetsController.getEnemyTanks();
+				for each (var tank:Tank in enemyTanks) {
 					_mapObjectsController.addEnemyTank(tank);
 				}
 			}

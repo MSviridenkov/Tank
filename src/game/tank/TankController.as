@@ -1,4 +1,6 @@
 package game.tank {
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	import game.events.TankShotingEvent;
 	import game.IControllerWithTime;
 	import com.greensock.TimelineMax;
@@ -26,6 +28,9 @@ package game.tank {
 		private var _startY:Number = 300;
 		
 		private var _movingTimeline:TimelineMax;
+		
+		private var _autoAttackTimer:Timer;
+		private var _targetTank:Tank; //for autoattack mode only
 		
 		private var _moving:Boolean; //true - tank moving now, false - else
 		
@@ -61,6 +66,13 @@ package game.tank {
 			return tank.hitTestPoint(point.x, point.y);
 		}
 		
+		public function setAutoAttack(targetTank:Tank):void {
+			_targetTank = targetTank;
+			_autoAttackTimer = new Timer(Math.random() * 3000 + 4000);
+			_autoAttackTimer.addEventListener(TimerEvent.TIMER, onAutoAttackTimer);
+			_autoAttackTimer.start();
+		}
+		
 		public function bam():void {
 			tank.bam();
 			TweenMax.killTweensOf(tank);
@@ -69,7 +81,7 @@ package game.tank {
 		public function readyForMoving():void {
 			tank.updateSpeedup();
 			_movingTimeline.kill();
-			_movingTimeline = new TimelineMax();
+			_movingTimeline = new TimelineMax({onComplete : onMovingComplete});
 			_movingTimeline.timeScale = _scaleTime;
 		}
 		
@@ -82,6 +94,16 @@ package game.tank {
 						onStart : onStartMoveToPathNode,
 						onStartParams : [point]}));
 			_movingTimeline.play();
+		}
+		
+		/* Internal functions */
+		
+		private function onAutoAttackTimer(event:TimerEvent):void {
+			shot(new Point(_targetTank.stageX, _targetTank.stageY));
+		}
+		
+		private function onMovingComplete():void {
+			dispatchEvent(new TankEvent(TankEvent.MOVING_COMPLETE));
 		}
 		
 		private function onStartMoveToPathNode(point:Point):void {
