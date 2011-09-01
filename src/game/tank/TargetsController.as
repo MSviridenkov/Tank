@@ -1,4 +1,5 @@
 package game.tank {
+	import game.events.TankShotingEvent;
 	import game.events.TankEvent;
 	import flash.geom.Point;
 	import pathfinder.Pathfinder;
@@ -36,6 +37,17 @@ package game.tank {
 			return tanks;
 		}
 		
+		public function killEnemyTank(tank:Tank):void {
+			for  (var i:int = 0; i < _enemyes.length; ++i) {
+				if (_enemyes[i].tank == tank) {
+					_enemyes[i].bam();
+					removeEnemyTankListeners(_enemyes[i]);
+					_enemyes.splice(i, 1);
+					break;
+				}
+			}
+		}
+		
 		/* Internal functions */
 		
 		private function createTarget():void {
@@ -47,10 +59,22 @@ package game.tank {
 			enemyTank.setAutoAttack(_playerTank);
 			_enemyes.push(enemyTank);
 			moveEnemyTank(enemyTank);
-			enemyTank.addEventListener(TankEvent.MOVING_COMPLETE, function(event:TankEvent):void {
-				moveEnemyTank(enemyTank);
-			});
+			enemyTank.addEventListener(TankEvent.MOVING_COMPLETE, onEnemyMovingComplete);
+			enemyTank.addEventListener(TankShotingEvent.WAS_SHOT, onEnemyShotEvent);
 			dispatchEvent(new TargetsControllerEvent(TargetsControllerEvent.NEW_TANK, enemyTank.tank));
+		}
+		
+		private function removeEnemyTankListeners(enemyTankController:TankController):void {
+			enemyTankController.removeEventListener(TankShotingEvent.WAS_SHOT, onEnemyShotEvent);
+			enemyTankController.removeEventListener(TankEvent.MOVING_COMPLETE, onEnemyMovingComplete);
+		}
+		
+		private function onEnemyMovingComplete(event:TankEvent):void {
+				moveEnemyTank(event.tankController);
+		}
+		
+		private function onEnemyShotEvent(event:TankShotingEvent):void {
+			dispatchEvent(new TankShotingEvent(TankShotingEvent.WAS_SHOT, event.bullet));
 		}
 		
 		private function moveEnemyTank(enemyTankController:TankController):void {

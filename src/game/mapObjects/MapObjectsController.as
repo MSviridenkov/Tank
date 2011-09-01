@@ -1,4 +1,5 @@
 package game.mapObjects {
+	import game.events.DamageObjectEvent;
 	import game.tank.Bullet;
 	import game.IControllerWithTime;
 	import flash.events.EventDispatcher;
@@ -19,6 +20,7 @@ package game.mapObjects {
 		private var _mines:Vector.<Mine>;
 		private var _bullets:Vector.<Bullet>;
 		private var _enemyTanks:Vector.<Tank>;
+		private var _playerTank:Tank;
 		
 		private var _scaleTime:Number;
 		
@@ -80,6 +82,10 @@ package game.mapObjects {
 			_enemyTanks.push(tank);
 		}
 		
+		public function addPlayerTank(tank:Tank):void {
+			_playerTank = tank;
+		}
+		
 		/* Internal functions */
 		
 		private function addStone(mPoint:Point):void {
@@ -118,13 +124,15 @@ package game.mapObjects {
 		private function onBulletUpdate(bullet:Bullet):void {
 			checkHitEnemyTank(bullet);
 			checkHitStone(bullet);
+			checkHitPlayerTank(bullet);
 		}
 		private function checkHitEnemyTank(bullet:Bullet):void {
 			if (!_enemyTanks) { return; }
 			for each (var enemyTank:Tank in _enemyTanks) {
 				if (bullet.hitTestObject(enemyTank)) {
 					removeBullet(bullet);
-					removeTank(enemyTank);
+					removeEnemyTank(enemyTank);
+					dispatchEvent(new DamageObjectEvent(DamageObjectEvent.DAMANGE_ENEMY_TANK, enemyTank));
 				}
 			}
 		}
@@ -136,18 +144,27 @@ package game.mapObjects {
 				}
 			}
 		}
+		
+		private function checkHitPlayerTank(bullet:Bullet):void {
+			if (!_playerTank) { return; }
+			if (bullet.hitTestObject(_playerTank)) {
+				dispatchEvent(new DamageObjectEvent(DamageObjectEvent.DAMANGE_PLAYER_TANK, _playerTank));
+			}
+		}
+		
 		private function onBulletComplete(bullet:Bullet):void {
 			removeBullet(bullet);
 		}
 		private function removeBullet(bullet:Bullet):void {
+			trace("removeBullet");
 			if (_container.contains(bullet)) { _container.removeChild(bullet); }
+			bullet.remove();
 			const index:int = _bullets.indexOf(bullet);
 			if (index >= 0) { _bullets.splice(index, 1); }
 		}
 		
 		/* enemy tanks functions */
-		private function removeTank(tank:Tank):void {
-			if (_container.contains(tank)) { _container.removeChild(tank); }
+		private function removeEnemyTank(tank:Tank):void {
 			const index:int = _enemyTanks.indexOf(tank);
 			if (index >= 0) { _enemyTanks.splice(index, 1); }
 		}

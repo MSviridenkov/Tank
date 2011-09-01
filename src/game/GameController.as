@@ -1,4 +1,5 @@
 package game {
+	import game.events.DamageObjectEvent;
 	import pathfinder.Pathfinder;
 	import game.tank.Tank;
 	import game.events.TargetsControllerEvent;
@@ -70,7 +71,10 @@ package game {
 			_mouseDrawController.addEventListener(DrawingControllerEvent.NEW_MOVE_POINT, onNewMovePoint);
 			_mouseDrawController.addEventListener(DrawingControllerEvent.DRAWING_COMPLETE, onDrawingComplete);
 			_mapObjectsController.addEventListener(MineBamEvent.BAM, onMineBam);
+			_mapObjectsController.addEventListener(DamageObjectEvent.DAMANGE_ENEMY_TANK, onEnemyDamage);
+			_mapObjectsController.addEventListener(DamageObjectEvent.DAMANGE_PLAYER_TANK, onPlayerDamage);
 			_tankController.addEventListener(TankShotingEvent.WAS_SHOT, onTankShot);
+			_targetsController.addEventListener(TankShotingEvent.WAS_SHOT, onTankShot);
 			_targetsController.addEventListener(TargetsControllerEvent.NEW_TANK, onNewEnemyTank);
 		}
 		
@@ -89,6 +93,14 @@ package game {
 		}
 		
 		/* event handlers */
+		
+		private function onEnemyDamage(event:DamageObjectEvent):void {
+			_targetsController.killEnemyTank(event.object as Tank);
+		}
+		private function onPlayerDamage(event:DamageObjectEvent):void {
+			_tankController.bam();
+			killTank();
+		}
 		
 		private function onStageClick(event:MouseEvent):void {
 			const point:Point = new Point(event.stageX, event.stageY);

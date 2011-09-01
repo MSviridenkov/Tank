@@ -5,6 +5,7 @@ package game.tank {
 	
 	public class Bullet extends Sprite {
 		private var _tween:TweenMax;
+		private var _speed:Number;
 		
 		public function Bullet(point:Point, rotation:Number):void {
 			var view:BulletView = new BulletView();
@@ -15,11 +16,19 @@ package game.tank {
 		}
 		
 		public function moveTo(point:Point):void {
-			_tween = new TweenMax(this, 1.3, {x : point.x, y : point.y
+			_speed = Math.sqrt(Math.pow(this.x-point.x, 2) + Math.pow(this.y - point.y, 2)) / 200;
+			trace(_speed);
+			_tween = new TweenMax(this, _speed, {x : point.x, y : point.y
 																//onUpdate : onBulletTweenUpdate,
 																//onUpdateParams : [bullet],
 																//onComplete : getCompleteBulletFunction(bullet)
 																} );
+		}
+		
+		public function remove():void {
+			_tween.vars["onComplete"] = null;
+			_tween.vars["onUpdate"] = null;
+			_tween.kill();
 		}
 		
 		public function onComplete(onComplete:Function):void {

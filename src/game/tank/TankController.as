@@ -76,6 +76,7 @@ package game.tank {
 		public function bam():void {
 			tank.bam();
 			TweenMax.killTweensOf(tank);
+			if (_autoAttackTimer) { _autoAttackTimer.stop(); }
 		}
 		
 		public function readyForMoving():void {
@@ -103,7 +104,7 @@ package game.tank {
 		}
 		
 		private function onMovingComplete():void {
-			dispatchEvent(new TankEvent(TankEvent.MOVING_COMPLETE));
+			dispatchEvent(new TankEvent(TankEvent.MOVING_COMPLETE, this));
 		}
 		
 		private function onStartMoveToPathNode(point:Point):void {

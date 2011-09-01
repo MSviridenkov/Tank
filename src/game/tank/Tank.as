@@ -1,4 +1,5 @@
 package game.tank {
+	import game.MapObject;
 	import com.greensock.TweenMax;
 
 import flash.geom.ColorTransform;
@@ -6,7 +7,7 @@ import flash.geom.ColorTransform;
 import game.GameController;
 	import flash.display.Sprite;
 
-	public class Tank extends Sprite {
+	public class Tank extends MapObject {
 		public var gun:GunView;
 		public var tankBase:TankBaseView;
 		public var gunController:GunController;

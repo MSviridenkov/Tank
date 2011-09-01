@@ -12,8 +12,8 @@ package {
 		public function Main() {
 			container = new Sprite(); 
 			this.addChild(container);
-            const paper:PaperView = new PaperView();
-            container.addChild(paper);
+			const paper:PaperView = new PaperView();
+			container.addChild(paper);
 			
 			gameController = new GameController(container);
 			
