@@ -44,11 +44,11 @@ package game.mapObjects {
 			this.graphics.drawCircle(0, 0, 2);
 			this.graphics.endFill();
 			const mine:Sprite = this;
+			const numbersText:TextField = new TextField();
 			_tween = new TweenMax(
 					this, .5, {alpha : 0, repeat : 5, yoyo: true, onComplete : 
-					function():void { bam(); mine.visible = false;}, timeScale : _scaleTime});
+					function():void { bam(); numbersText.visible = false;}, timeScale : _scaleTime});
 					
-			const numbersText:TextField = new TextField();
 			const textFormat:TextFormat = new TextFormat();
 			textFormat.size = 20;
 			textFormat.color = 0xaa0f00;

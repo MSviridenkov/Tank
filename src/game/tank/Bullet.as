@@ -8,13 +8,14 @@ package game.tank {
 		private var _speed:Number;
 		private var _selfTank:Tank;
 		
-		public function Bullet(selfTank:Tank, point:Point):void {
+		public function Bullet(selfTank:Tank, stagePoint:Point):void {
 			var view:BulletView = new BulletView();
 			_selfTank = selfTank;
 			addChild(view);
 			this.rotation = selfTank.gunController.gunRot;
-			this.x = point.x;
-			this.y = point.y;
+			const bulletPoint:Point = selfTank.gunController.getBulletPoint(stagePoint);
+			this.x = bulletPoint.x;
+			this.y = bulletPoint.y;
 		}
 		
 		public function get selfTank():Tank { return _selfTank; }

@@ -68,8 +68,9 @@ package game.matrix {
 			
 			for each (var vect:Vector.<uint> in _matrix) {
 				for (var j:int = 0; j < MATRIX_HEIGHT; ++j) {
-					Math.random() > .1 ? vect.push(MatrixItemIds.EMPTY) :
-																vect.push(MatrixItemIds.STONE);
+					Math.random() > .2 ? vect.push(MatrixItemIds.EMPTY) :
+																Math.random() < .1 ? vect.push(MatrixItemIds.STONE)
+																									: vect.push(MatrixItemIds.BRICKS);
 				}
 			}
 		}

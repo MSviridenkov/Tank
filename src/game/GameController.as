@@ -42,7 +42,7 @@ package game {
 			Pathfinder.matrix = _mapMatrix.matrix;
 			_mouseDrawController = new MouseDrawController(_container, _mapMatrix);
 			_bulletsController = new BulletsController(_container);
-			_tankController = new TankController(_container, _mapMatrix);
+			_tankController = new TankController(_container, _mapMatrix, true);
 			_targetsController = new TargetsController(_container, _mapMatrix, _tankController.tank);
 			_mapObjectsController = new MapObjectsController(_mapMatrix, _container);
 			_mapObjectsController.addPlayerTank(_tankController.tank);
@@ -89,6 +89,7 @@ package game {
 			_mouseDrawController.removeEventListener(DrawingControllerEvent.NEW_MOVE_POINT, onNewMovePoint);
 			_mouseDrawController.removeEventListener(DrawingControllerEvent.DRAWING_COMPLETE, onDrawingComplete);
 			_mapObjectsController.removeEventListener(MineBamEvent.BAM, onMineBam);
+			_mapObjectsController.removeEventListener(DamageObjectEvent.DAMANGE_PLAYER_TANK, onPlayerDamage);
 			_tankController.removeEventListener(TankShotingEvent.WAS_SHOT, onTankShot);
 			_container.removeEventListener(MouseEvent.CLICK, onStageClick);
 			

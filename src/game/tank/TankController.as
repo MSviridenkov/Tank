@@ -1,4 +1,5 @@
 package game.tank {
+	import game.events.GunRotateCompleteEvent;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	import game.events.TankShotingEvent;
@@ -32,6 +33,8 @@ package game.tank {
 		private var _autoAttackTimer:Timer;
 		private var _targetTank:Tank; //for autoattack mode only
 		
+		private var _bulletPoint:Point; //coz waiting for gun rotate
+		
 		private var _moving:Boolean; //true - tank moving now, false - else
 		
 		public static const LEFT_ROT:int = -90;
@@ -40,10 +43,10 @@ package game.tank {
 		public static const DOWN_ROT_PLUS:int = 180;
 		public static const DOWN_ROT_MINUS:int =-180;
 		
-		public function TankController(container:Sprite, mapMatrix:MapMatrix):void {
+		public function TankController(container:Sprite, mapMatrix:MapMatrix, player:Boolean=false):void {
 			_moving = false;
 			_scaleTime = 1;
-			tank = new Tank(true);
+			tank = new Tank(player);
 			_movingTimeline = new TimelineMax();
 			_direction = new TankDirection(TankDirection.UP_DIR);
 			_container = container;
@@ -113,11 +116,19 @@ package game.tank {
 		}
 		
 		public function shot(point:Point):void {
-			tank.gunController.gunRotation( _mapMatrix.getMatrixPoint((new Point(point.x, point.y))));
+			_bulletPoint = point;
+			tank.gunController.removeTween();
+			tank.gunController.addEventListener(GunRotateCompleteEvent.COMPLETE,
+																						onGunRotateComplete);
+			tank.gunController.gunRotation(_mapMatrix.getMatrixPoint((new Point(point.x, point.y))));
+		}
+		
+		private function onGunRotateComplete(event:GunRotateCompleteEvent):void {
+			tank.gunController.removeEventListener(GunRotateCompleteEvent.COMPLETE,
+																						onGunRotateComplete);
 			const stagePoint:Point =_mapMatrix.getStagePoint(new Point(tank.x, tank.y));
-			const bullet:Bullet = new Bullet(tank,
-																tank.gunController.getBulletPoint(stagePoint));
-			bullet.moveTo(point);
+			const bullet:Bullet = new Bullet(tank, stagePoint);
+			bullet.moveTo(_bulletPoint);
 			_container.addChild(bullet);
 			dispatchEvent(new TankShotingEvent(TankShotingEvent.WAS_SHOT, bullet));
 		}

@@ -5,7 +5,7 @@ package game.mapObjects {
 
 	public class Stone extends MapObject {
 		private var _rect:Rectangle;
-        private var _view:StoneView;
+		private var _view:StoneView;
 		
 		public function Stone(rect:Rectangle) {
 			super();

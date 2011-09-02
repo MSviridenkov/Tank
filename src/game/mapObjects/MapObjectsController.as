@@ -1,4 +1,6 @@
 package game.mapObjects {
+	import com.greensock.easing.Bounce;
+	import com.greensock.TweenMax;
 	import game.events.DamageObjectEvent;
 	import game.tank.Bullet;
 	import game.IControllerWithTime;
@@ -22,6 +24,8 @@ package game.mapObjects {
 		private var _bullets:Vector.<Bullet>;
 		private var _enemyTanks:Vector.<Tank>;
 		private var _playerTank:Tank;
+		
+		private var _playerTankKilled:Boolean = false;
 		
 		private var _scaleTime:Number;
 		
@@ -101,7 +105,7 @@ package game.mapObjects {
 		
 		private function addBrick(mPoint:Point):void {
 			var brick:Brick;
-			brick = new Brick(_mapMatrix.getStagePoint(mPoint));
+			brick = new Brick(_mapMatrix.getStageRectangle(mPoint));
 			if (!_bricks) { _bricks = new Vector.<Brick>(); }
 			_bricks.push(brick);
 			_container.addChild(brick);
@@ -135,6 +139,7 @@ package game.mapObjects {
 		private function onBulletUpdate(bullet:Bullet):void {
 			checkHitEnemyTank(bullet);
 			checkHitStone(bullet);
+			checkHitBrick(bullet);
 			checkHitPlayerTank(bullet);
 		}
 		private function checkHitEnemyTank(bullet:Bullet):void {
@@ -144,6 +149,7 @@ package game.mapObjects {
 						bullet.hitTestObject(enemyTank)) {
 					removeBullet(bullet);
 					removeEnemyTank(enemyTank);
+					showBamOnTank(new Point(enemyTank.stageX, enemyTank.stageY));
 					dispatchEvent(new DamageObjectEvent(DamageObjectEvent.DAMANGE_ENEMY_TANK, enemyTank));
 				}
 			}
@@ -156,12 +162,36 @@ package game.mapObjects {
 				}
 			}
 		}
-		
+		private function checkHitBrick(bullet:Bullet):void {
+			if (!_bricks) { return; }
+			for each (var brick:Brick in _bricks) {
+				if (bullet.hitTestObject(brick)) {
+					removeBullet(bullet);
+					if (brick.damaged) { removeBrick(brick);
+					} else { brick.damage(); }
+				}
+			}
+		}
 		private function checkHitPlayerTank(bullet:Bullet):void {
+			if (_playerTankKilled) { return; }
 			if (!_playerTank) { return; }
-			if (bullet.hitTestObject(_playerTank)) {
+			if (_playerTank != bullet.selfTank &&
+					bullet.hitTestObject(_playerTank)) {
+					_playerTankKilled = true;
+					showBamOnTank(new Point(_playerTank.stageX, _playerTank.stageY), true);
 				dispatchEvent(new DamageObjectEvent(DamageObjectEvent.DAMANGE_PLAYER_TANK, _playerTank));
 			}
+		}
+		
+		private function showBamOnTank(point:Point, player:Boolean = false):void {
+			const bam:BamView = new BamView();
+			bam.x = point.x - bam.width/2;
+			bam.y = point.y - bam.height/2;
+			bam.scaleX = 0; bam.scaleY = 0;
+			bam.alpha = .4;
+			_container.addChild(bam);
+			TweenMax.to(bam, .9, {scaleX : 1, scaleY : 1, alpha : 1, ease : Bounce.easeOut,
+									onComplete: function():void {if (!player) {_container.removeChild(bam); }}});
 		}
 		
 		private function onBulletComplete(bullet:Bullet):void {
@@ -174,6 +204,13 @@ package game.mapObjects {
 			const index:int = _bullets.indexOf(bullet);
 			if (index >= 0) { _bullets.splice(index, 1); }
 		}
+
+		private function removeBrick(brick:Brick):void {
+			if (_container.contains(brick)) { _container.removeChild(brick); }
+			const index:int = _bricks.indexOf(brick);
+			if (index >= 0) { _bricks.splice(index, 1); }
+		}
+		
 		
 		/* enemy tanks functions */
 		private function removeEnemyTank(tank:Tank):void {

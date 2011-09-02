@@ -1,9 +1,11 @@
 package game.tank {
+	import game.events.GunRotateCompleteEvent;
+	import flash.events.EventDispatcher;
 	import com.greensock.TweenMax;
 	
 	import flash.geom.Point;
 
-	public class GunController {
+	public class GunController extends EventDispatcher{
 		public var gunRot:int;
 		public var abc:Boolean;
 	
@@ -13,6 +15,10 @@ package game.tank {
 		public function GunController(gun:GunView, tank:Tank) {
 			_gun = gun;
 			_t = tank;
+		}
+		
+		public function removeTween():void {
+			TweenMax.killTweensOf(_gun);
 		}
 		
 		public function gunRotation (point:Point):void {
@@ -28,7 +34,11 @@ package game.tank {
 			/*if (_point.y >= _tank.y && _point.x <= _tank.x) {
 				gunRot = (180 - angle1)
 			}*/
-			TweenMax.to(_gun, 1.3, {rotation : gunRot});
+			TweenMax.to(_gun, 0.4, {rotation : gunRot, onComplete: function():void {
+					dispatchEvent(new GunRotateCompleteEvent(GunRotateCompleteEvent.COMPLETE));
+				}
+			
+			});
 		}
 		
 		public function getBulletPoint(point:Point):Point {
@@ -36,12 +46,12 @@ package game.tank {
 			var dlinaX:int;
 			var dlinaY:int;
 			if (-90<angle<90){
-				dlinaX = Math.sin(angle/180*Math.PI) * 25;
-				dlinaY = Math.cos(angle/180*Math.PI) * 25;
+				dlinaX = Math.sin(angle/180*Math.PI) * 30;
+				dlinaY = Math.cos(angle/180*Math.PI) * 30;
 			}
 			else{
-				dlinaX = Math.sin(angle/180*Math.PI*(-1) + 180) * 25;
-				dlinaY = Math.cos(angle/180*Math.PI*(-1) + 180) * 25;
+				dlinaX = Math.sin(angle/180*Math.PI*(-1) + 180) * 30;
+				dlinaY = Math.cos(angle/180*Math.PI*(-1) + 180) * 30;
 			}
 			return new Point(point.x + dlinaX, point.y - dlinaY);
 		}
