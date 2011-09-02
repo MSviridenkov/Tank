@@ -6,14 +6,18 @@ package game.tank {
 	public class Bullet extends Sprite {
 		private var _tween:TweenMax;
 		private var _speed:Number;
+		private var _selfTank:Tank;
 		
-		public function Bullet(point:Point, rotation:Number):void {
+		public function Bullet(selfTank:Tank, point:Point):void {
 			var view:BulletView = new BulletView();
+			_selfTank = selfTank;
 			addChild(view);
-			this.rotation = rotation;
+			this.rotation = selfTank.gunController.gunRot;
 			this.x = point.x;
 			this.y = point.y;
 		}
+		
+		public function get selfTank():Tank { return _selfTank; }
 		
 		public function moveTo(point:Point):void {
 			_speed = Math.sqrt(Math.pow(this.x-point.x, 2) + Math.pow(this.y - point.y, 2)) / 200;

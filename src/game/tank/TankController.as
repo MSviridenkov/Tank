@@ -115,8 +115,8 @@ package game.tank {
 		public function shot(point:Point):void {
 			tank.gunController.gunRotation( _mapMatrix.getMatrixPoint((new Point(point.x, point.y))));
 			const stagePoint:Point =_mapMatrix.getStagePoint(new Point(tank.x, tank.y));
-			const bullet:Bullet = new Bullet(tank.gunController.getBulletPoint(stagePoint),
-																				tank.gunController.gunRot);
+			const bullet:Bullet = new Bullet(tank,
+																tank.gunController.getBulletPoint(stagePoint));
 			bullet.moveTo(point);
 			_container.addChild(bullet);
 			dispatchEvent(new TankShotingEvent(TankShotingEvent.WAS_SHOT, bullet));

@@ -1,4 +1,7 @@
 package game.mapObjects {
+	import flash.text.TextFormat;
+	import flash.text.TextField;
+	import com.greensock.TimelineMax;
 	import flash.display.Shape;
 	import flash.events.Event;
 	import com.greensock.TweenMax;
@@ -11,6 +14,7 @@ package game.mapObjects {
 		private var _activated:Boolean;
 		
 		private var _tween:TweenMax;
+		private var _numbersTimeline:TimelineMax;
 		
 		public function Mine(pint:Point):void {
 			_distance = 3;
@@ -39,13 +43,36 @@ package game.mapObjects {
 			this.graphics.beginFill(0xaa0f00);
 			this.graphics.drawCircle(0, 0, 2);
 			this.graphics.endFill();
+			const mine:Sprite = this;
 			_tween = new TweenMax(
 					this, .5, {alpha : 0, repeat : 5, yoyo: true, onComplete : 
-					function():void { bam(); }, timeScale : _scaleTime});
+					function():void { bam(); mine.visible = false;}, timeScale : _scaleTime});
+					
+			const numbersText:TextField = new TextField();
+			const textFormat:TextFormat = new TextFormat();
+			textFormat.size = 20;
+			textFormat.color = 0xaa0f00;
+			numbersText.defaultTextFormat = textFormat;
+			numbersText.text = "5";
+			numbersText.x = -numbersText.textWidth*1.5;
+			numbersText.y = -numbersText.textHeight*1.2;
+			this.addChild(numbersText);
+			_numbersTimeline = new TimelineMax({timeScale : _scaleTime});
+			for (var i:int = 0; i < 5; ++i) {
+				_numbersTimeline.append(new TweenMax(numbersText, .5, {
+					scaleX : 2, scaleY : 2,
+					onStart : function():void {
+						numbersText.scaleX = 1;
+						numbersText.scaleY = 1;
+						numbersText.text = String(int(numbersText.text)-1);
+					}
+				}));
+			}
 		}
 		
 		public function scaleTime(value:Number):void {
 			if (_tween) { _tween.timeScale = value; }
+			if (_numbersTimeline) { _numbersTimeline.timeScale = value; }
 		}
 		
 		/* Internal functions */

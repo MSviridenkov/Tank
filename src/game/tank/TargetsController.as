@@ -1,4 +1,5 @@
 package game.tank {
+	import game.IControllerWithTime;
 	import game.events.TankShotingEvent;
 	import game.events.TankEvent;
 	import flash.geom.Point;
@@ -11,7 +12,8 @@ package game.tank {
 	
 	import game.matrix.MapMatrix;
 
-	public class TargetsController extends EventDispatcher{
+	public class TargetsController extends EventDispatcher
+																implements IControllerWithTime{
 		private var _timer:Timer;
 		private var _enemyes:Vector.<TankController>;
 		private var _container:Sprite;
@@ -27,6 +29,12 @@ package game.tank {
 			for (var i:int = 0; i < Math.random() * 5; i++) { createTarget(); }
 			initTimer();
 			startTimer();
+		}
+		
+		public function scaleTime(value:Number):void {
+			for each (var tankController:TankController in _enemyes) {
+				tankController.scaleTime(value);
+			}
 		}
 		
 		public function getEnemyTanks():Vector.<Tank> {

@@ -1,15 +1,16 @@
 package game.mapObjects {
+	import game.MapObject;
 	import flash.geom.Rectangle;
 	import flash.display.Sprite;
 
-	public class Stone extends Sprite {
+	public class Stone extends MapObject {
 		private var _rect:Rectangle;
         private var _view:StoneView;
 		
 		public function Stone(rect:Rectangle) {
 			super();
 			_rect = rect;
-            _view = new StoneView();
+			_view = new StoneView();
 			this.x = rect.x;
 			this.y = rect.y;
 			this.addChild(_view);

@@ -45,6 +45,7 @@ package game {
 			_tankController = new TankController(_container, _mapMatrix);
 			_targetsController = new TargetsController(_container, _mapMatrix, _tankController.tank);
 			_mapObjectsController = new MapObjectsController(_mapMatrix, _container);
+			_mapObjectsController.addPlayerTank(_tankController.tank);
 			initMapObjectsController();
 			_tankMovementListener = new TankMovementListener(_tankController, _mapObjectsController,
 																												_mouseDrawController);
@@ -55,6 +56,7 @@ package game {
 		private function initTimeController():void {
 			_timeController.add_controller(_tankController);
 			_timeController.add_controller(_mapObjectsController);
+			_timeController.add_controller(_targetsController);
 		}
 		private function initMapObjectsController():void {
 			_mapObjectsController.drawObjects();

@@ -17,6 +17,7 @@ package game.mapObjects {
 		private var _mapMatrix:MapMatrix;
 		private var _container:Sprite;
 		private var _stones:Vector.<Stone>;
+		private var _bricks:Vector.<Brick>;
 		private var _mines:Vector.<Mine>;
 		private var _bullets:Vector.<Bullet>;
 		private var _enemyTanks:Vector.<Tank>;
@@ -64,6 +65,8 @@ package game.mapObjects {
 				for (var j:int = 0; j < MapMatrix.MATRIX_HEIGHT; ++j) {
 					if (_mapMatrix.matrix[i][j] == MatrixItemIds.STONE) {
 						addStone(new Point(i, j));
+					} else if (_mapMatrix.matrix[i][j] == MatrixItemIds.BRICKS) {
+						addBrick(new Point(i, j));
 					}
 				}
 			}
@@ -94,6 +97,14 @@ package game.mapObjects {
 			if (!_stones) { _stones = new Vector.<Stone>(); }
 			_stones.push(stone);
 			_container.addChild(stone);
+		}
+		
+		private function addBrick(mPoint:Point):void {
+			var brick:Brick;
+			brick = new Brick(_mapMatrix.getStagePoint(mPoint));
+			if (!_bricks) { _bricks = new Vector.<Brick>(); }
+			_bricks.push(brick);
+			_container.addChild(brick);
 		}
 		
 		private function addMines():void {
@@ -129,7 +140,8 @@ package game.mapObjects {
 		private function checkHitEnemyTank(bullet:Bullet):void {
 			if (!_enemyTanks) { return; }
 			for each (var enemyTank:Tank in _enemyTanks) {
-				if (bullet.hitTestObject(enemyTank)) {
+				if (enemyTank != bullet.selfTank && 
+						bullet.hitTestObject(enemyTank)) {
 					removeBullet(bullet);
 					removeEnemyTank(enemyTank);
 					dispatchEvent(new DamageObjectEvent(DamageObjectEvent.DAMANGE_ENEMY_TANK, enemyTank));
